@@ -5,6 +5,8 @@ import { StyleSheet, Text, View, Dimensions, Image, Animated, PanResponder } fro
 const SCREEN_HEIGHT = Dimensions.get('window').height
 const SCREEN_WIDTH = Dimensions.get('window').width
 
+let emptyArr = []
+
 const Users = [
   {id:"1", uri: require('./assets/present.jpeg')},
   {id:"2", uri: require('./assets/present2.jpeg')},
@@ -19,6 +21,7 @@ export default class App extends React.Component {
       super()
 
       this.position = new Animated.ValueXY()
+      
       this.state = {
         currentIndex: 0
       }
@@ -76,6 +79,8 @@ export default class App extends React.Component {
             Animated.spring(this.position,{toValue:{x:SCREEN_WIDTH+100,y:gestureState.dy}
             }).start(()=>{
               this.setState({currentIndex:this.state.currentIndex+1},()=>{
+                // console.log(emptyArr.push(renderUsers));
+                console.log(this.state);
                 this.position.setValue({x:0,y:0})
               })
             })
