@@ -1,18 +1,21 @@
 import React from 'react'
-// import { StatusBar } from 'expo-status-bar';
+import { createRoot } from 'react-dom/client';
+const container = document.getElementById('app');
+import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Dimensions, Image, Animated, PanResponder } from 'react-native';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height
 const SCREEN_WIDTH = Dimensions.get('window').width
 
-let emptyArr = []
+let positiveArr = []
+let negativeArr = []
 
 const Users = [
-  {id:"1", uri: require('./assets/present.jpeg')},
-  {id:"2", uri: require('./assets/present2.jpeg')},
-  {id:"3", uri: require('./assets/present3.jpeg')},
-  {id:"4", uri: require('./assets/present4.jpeg')},
-  {id:"5", uri: require('./assets/present5.jpeg')}
+  {id:"1", uri: require('./assets/present.jpeg'), keyword: 'present1'},
+  {id:"2", uri: require('./assets/present2.jpeg'), keyword: 'present2'},
+  {id:"3", uri: require('./assets/present3.jpeg'), keyword: 'present3'},
+  {id:"4", uri: require('./assets/present4.jpeg'), keyword: 'present4'},
+  {id:"5", uri: require('./assets/present5.jpeg'), keyword: 'present5'}
 ]
 
 export default class App extends React.Component {
@@ -23,7 +26,8 @@ export default class App extends React.Component {
       this.position = new Animated.ValueXY()
       
       this.state = {
-        currentIndex: 0
+        currentIndex: 0,
+        keyword: Users[0]['keyword']
       }
 
       this.rotate = this.position.x.interpolate({
@@ -78,9 +82,9 @@ export default class App extends React.Component {
           if(gestureState.dx>120){
             Animated.spring(this.position,{toValue:{x:SCREEN_WIDTH+100,y:gestureState.dy}
             }).start(()=>{
-              this.setState({currentIndex:this.state.currentIndex+1},()=>{
-                // console.log(emptyArr.push(renderUsers));
-                console.log(this.state);
+              this.setState({currentIndex:this.state.currentIndex+1,keyword: Users[this.state.currentIndex]['keyword']},()=>{
+                positiveArr.push('gift '+ this.state['keyword'])
+                console.log(positiveArr)
                 this.position.setValue({x:0,y:0})
               })
             })
@@ -88,7 +92,9 @@ export default class App extends React.Component {
           else if(gestureState.dx < -120){
             Animated.spring(this.position,{toValue:{x:-SCREEN_WIDTH-100,y:gestureState.dy}
             }).start(()=>{
-              this.setState({currentIndex:this.state.currentIndex+1},()=>{
+              this.setState({currentIndex:this.state.currentIndex+1,keyword: Users[this.state.currentIndex]['keyword']},()=>{
+                negativeArr.push('gift ' + this.state['keyword'])
+                console.log(negativeArr)
                 this.position.setValue({x:0,y:0})
               })
             })
