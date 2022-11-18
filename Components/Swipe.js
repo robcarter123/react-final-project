@@ -8,14 +8,14 @@ let positiveArr = []
 let negativeArr = []
 
 const Users = [
-  { id: '1', uri: require('./assets/present.jpeg'), keyword: 'present1' },
-  { id: '2', uri: require('./assets/present2.jpeg'), keyword: 'present2' },
-  { id: '3', uri: require('./assets/present3.jpeg'), keyword: 'present3' },
-  { id: '4', uri: require('./assets/present4.jpeg'), keyword: 'present4' },
-  { id: '5', uri: require('./assets/present5.jpeg'), keyword: 'present5' }
+  { id: '1', uri: require('../assets/present.jpeg'), keyword: 'present1' },
+  { id: '2', uri: require('../assets/present2.jpeg'), keyword: 'present2' },
+  { id: '3', uri: require('../assets/present3.jpeg'), keyword: 'present3' },
+  { id: '4', uri: require('../assets/present4.jpeg'), keyword: 'present4' },
+  { id: '5', uri: require('../assets/present5.jpeg'), keyword: 'present5' }
 ]
 
-const App = () => {
+const Swipe = () => {
   const [state, setState] = useState({
     currentIndex: 0,
     keyword: Users[0]['keyword']
@@ -193,4 +193,4 @@ const App = () => {
   )
 }
 
-export default App
+export default Swipe

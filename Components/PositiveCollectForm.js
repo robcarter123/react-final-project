@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, Button } from "react-native";
 import React, {useState} from 'react';
 import { TouchableOpacity } from "react-native-web";
 
-const App = () => {
+const PositiveCollectForm = () => {
   const [categories, setCategories] = useState([])
   const [warningOpacity, setWarningOpacity] = useState(0);
   
@@ -51,7 +51,7 @@ const App = () => {
   );
 };
 
-export default App;
+export default PositiveCollectForm;
 
 const styles = StyleSheet.create({
   submitBtn: {
