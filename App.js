@@ -5,14 +5,13 @@ import { NavigationContainer } from '@react-navigation/native';
 import NegativeCollectForm from './Components/NegativeCollectForm'
 import PositiveCollectForm from './Components/PositiveCollectForm'
 import Swipe from './Components/Swipe'
+import Navigator from './routes/homeStack'
 
 
 export default function App() {
   return (
-  <NavigationContainer>
-    <View>
-      <PositiveCollectForm />
-    </View>
-  </NavigationContainer>
+
+      <Navigator />
+    
   )
 }

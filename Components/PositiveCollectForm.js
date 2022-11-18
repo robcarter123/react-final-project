@@ -1,8 +1,22 @@
 import { StyleSheet, Text, View, Button } from "react-native";
 import React, {useState} from 'react';
 import { TouchableOpacity } from "react-native-web";
+import NegativeCollectForm from "./NegativeCollectForm";
 
-const PositiveCollectForm = () => {
+const PositiveCollectForm = ( {navigation} ) => {
+  
+  const pressHandler = () => {
+    if(categories.length > 0 && categories.length < 4){
+      navigation.navigate('NegativeCollectForm')
+      console.log(categories)
+      setWarningOpacity(0);
+      console.log(pressHandler)
+  } else if (categories.length === 0){
+      console.log('please select at least 1 like')
+      setWarningOpacity(100);
+    }
+  }
+
   const [categories, setCategories] = useState([])
   const [warningOpacity, setWarningOpacity] = useState(0);
   
@@ -18,7 +32,6 @@ const PositiveCollectForm = () => {
     }
 
     setCategories(Categories=>Categories.concat(selectedCategories))
-
   }
 
   return (
@@ -35,15 +48,7 @@ const PositiveCollectForm = () => {
           </View>
           
         )}
-        <Button style={styles.submitBtn} title='submit' onPress={()=>{
-          if(categories.length > 0 && categories.length < 4){
-            console.log(categories)
-            setWarningOpacity(0);
-          } else if (categories.length === 0){
-            console.log('please select at least 1 like')
-            setWarningOpacity(100);
-          }
-        }}></Button>
+        <Button style={styles.submitBtn} title='submit' onPress={pressHandler} />
          <Text style={{color: 'red', opacity: warningOpacity}}>Please select at least 1 Like</Text>
       </View>
     

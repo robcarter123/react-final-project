@@ -7,10 +7,10 @@ import Swipe from '../Components/Swipe';
 
 const screens = {
 
-    PositiveCollection: {
+    PositiveCollectForm: {
         screen: PositiveCollectForm
     },
-    NegativeCollection: {
+    NegativeCollectForm: {
         screen: NegativeCollectForm
         },
     Swipe: {
@@ -21,4 +21,4 @@ const screens = {
 
 const HomeStack = createStackNavigator(screens);
 
-export default createAppContainer
+export default createAppContainer(HomeStack);
