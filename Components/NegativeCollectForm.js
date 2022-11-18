@@ -4,6 +4,7 @@ import { TouchableOpacity } from "react-native-web";
 
 const App = () => {
   const [categories, setCategories] = useState([])
+  const [warningOpacity, setWarningOpacity] = useState(0);
   
   const option = [
     "Electronics", "Garden Furniture","Candles","Sports Equipment", "Board Games"
@@ -32,8 +33,18 @@ const App = () => {
           </TouchableOpacity>
           <Text style={styles.categoryName}>{option}</Text>
           </View>
+          
         )}
-        <Button style={styles.submitBtn} title='submit' onPress={()=>{console.log('pressed')}}></Button>
+        <Button style={styles.submitBtn} title='submit' onPress={()=>{
+          if(categories.length > 0 && categories.length < 4){
+            console.log(categories)
+            setWarningOpacity(0);
+          } else if (categories.length === 0){
+            console.log('please select at least 1 like')
+            setWarningOpacity(100);
+          }
+        }}></Button>
+         <Text style={{color: 'red', opacity: warningOpacity}}>Please select at least 1 Like</Text>
       </View>
     
     </View>
