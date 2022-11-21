@@ -7,9 +7,12 @@ import {
   Animated,
   PanResponder,
 } from "react-native";
+import { fetchItemsFromEbay } from "../api";
 
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 const SCREEN_WIDTH = Dimensions.get("window").width;
+
+const [count, setCount] = useState("")
 
 const Users = [
   { id: "1", uri: require("../assets/present.jpeg"), keyword: "present1" },
@@ -139,8 +142,22 @@ const Swipe = ( { navigation } ) => {
   console.log("positiveArr", positiveArr);
   console.log("negativeArr", negativeArr);
 
+ 
+  useEffect(() => {
+    if (count ===3){
+
+    }
+    
+  }, [count])
+  fetchItemsFromEbay()
+  .then((data) => {
+    console.log(data)
+  })
+
+
   const renderUsers = () => {
     return Users.map((item, i) => {
+      count++
       if (i < state.currentIndex) {
         return null;
       } else if (i == state.currentIndex) {
