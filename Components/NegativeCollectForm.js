@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, Button } from "react-native";
 import React, {useState} from 'react';
 import { TouchableOpacity } from "react-native-web";
+import positiveCategories from './PositiveCollectForm';
 
 const NegativeCollectForm = () => {
   const [categories, setCategories] = useState([])
@@ -23,7 +24,7 @@ const NegativeCollectForm = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Select your favourite Categories (up to 3)</Text>
+      <Text style={styles.title}>Select your least favourite Category</Text>
       <View style={styles.options}>
         {
           option.map(option =>
@@ -37,6 +38,7 @@ const NegativeCollectForm = () => {
         )}
         <Button style={styles.submitBtn} title='submit' onPress={()=>{
           if(categories.length > 0 && categories.length < 4){
+            console.log(positiveCategories)
             console.log(categories)
             setWarningOpacity(0);
           } else if (categories.length === 0){
@@ -44,7 +46,7 @@ const NegativeCollectForm = () => {
             setWarningOpacity(100);
           }
         }}></Button>
-         <Text style={{color: 'red', opacity: warningOpacity}}>Please select at least 1 Like</Text>
+         <Text style={{color: 'red', opacity: warningOpacity}}>Please select 1 Disliked Category</Text>
       </View>
     
     </View>
