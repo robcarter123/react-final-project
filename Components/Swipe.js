@@ -4,8 +4,7 @@ import { Text, View, Dimensions, Image, Animated, PanResponder } from 'react-nat
 const SCREEN_HEIGHT = Dimensions.get('window').height
 const SCREEN_WIDTH = Dimensions.get('window').width
 
-let positiveArr = []
-let negativeArr = []
+
 
 const Users = [
   { id: '1', uri: require('../assets/present.jpeg'), keyword: 'present1' },
@@ -15,7 +14,11 @@ const Users = [
   { id: '5', uri: require('../assets/present5.jpeg'), keyword: 'present5' }
 ]
 
-const Swipe = () => {
+const Swipe = ( { navigation } ) => {
+
+  let positiveArr = navigation.state.params.positiveML;
+  let negativeArr = navigation.state.params.negativeCategories;
+
   const [state, setState] = useState({
     currentIndex: 0,
     keyword: Users[0]['keyword']

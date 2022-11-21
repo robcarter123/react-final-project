@@ -2,12 +2,13 @@ import { StyleSheet, Text, View, Button } from "react-native";
 import React, {useState} from 'react';
 import { TouchableOpacity } from "react-native-web";
 import NegativeCollectForm from "./NegativeCollectForm";
+import { useRoute } from "@react-navigation/native";
 
 const PositiveCollectForm = ( {navigation} ) => {
-  
+
   const pressHandler = () => {
     if(positiveCategories.length > 0 && positiveCategories.length < 4){
-      navigation.navigate('NegativeCollectForm')
+      navigation.navigate('NegativeCollectForm', {positiveCategories});
       console.log(positiveCategories)
       setWarningOpacity(0);
   } else if (positiveCategories.length === 0){
