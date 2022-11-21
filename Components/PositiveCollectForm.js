@@ -6,18 +6,17 @@ import NegativeCollectForm from "./NegativeCollectForm";
 const PositiveCollectForm = ( {navigation} ) => {
   
   const pressHandler = () => {
-    if(categories.length > 0 && categories.length < 4){
+    if(positiveCategories.length > 0 && positiveCategories.length < 4){
       navigation.navigate('NegativeCollectForm')
-      console.log(categories)
+      console.log(positiveCategories)
       setWarningOpacity(0);
-      console.log(pressHandler)
-  } else if (categories.length === 0){
+  } else if (positiveCategories.length === 0){
       console.log('please select at least 1 like')
       setWarningOpacity(100);
     }
   }
 
-  const [categories, setCategories] = useState([])
+  const [positiveCategories, setPositiveCategories] = useState([])
   const [warningOpacity, setWarningOpacity] = useState(0);
   
   const option = [
@@ -26,12 +25,12 @@ const PositiveCollectForm = ( {navigation} ) => {
 
   function pickCategories(selectedCategories){
 
-    if(categories.includes(selectedCategories)){
-      setCategories(categories.filter(Categories => Categories !== selectedCategories))
+    if(positiveCategories.includes(selectedCategories)){
+      setPositiveCategories(positiveCategories.filter(Categories => Categories !== selectedCategories))
       return;
     }
 
-    setCategories(Categories=>Categories.concat(selectedCategories))
+    setPositiveCategories(Categories=>Categories.concat(selectedCategories))
   }
 
   return (
@@ -42,7 +41,7 @@ const PositiveCollectForm = ( {navigation} ) => {
           option.map(option =>
             <View key = {option} style={styles.Categories}>
           <TouchableOpacity style={styles.checkBox} onPress={() => pickCategories(option)}>
-           {categories.includes(option) && <Text style={styles.check}>🎅</Text> }
+           {positiveCategories.includes(option) && <Text style={styles.check}>🎅</Text> }
           </TouchableOpacity>
           <Text style={styles.categoryName}>{option}</Text>
           </View>
