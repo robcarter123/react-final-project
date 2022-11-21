@@ -11,6 +11,9 @@
   "dependencies": {
     "@expo/webpack-config": "^0.17.2",
     "@react-navigation/native": "^6.0.13",
+    "axios": "^1.1.3",
+    "dotenv": "^16.0.3",
+    "ebay-oauth-nodejs-client": "^1.2.2",
     "expo": "~47.0.5",
     "expo-linear-gradient": "^12.0.1",
     "expo-status-bar": "~1.4.2",
