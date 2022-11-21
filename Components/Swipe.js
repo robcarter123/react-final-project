@@ -1,4 +1,7 @@
+import { NavigationContainer, StackActions } from "@react-navigation/native";
+import { createNativeStackNavigator } from 'react-navigation-stack';
 import React, { useState, useEffect } from "react";
+import {StyleSheet} from 'react-native'
 import {
   Text,
   View,
@@ -7,24 +10,23 @@ import {
   Animated,
   PanResponder,
 } from "react-native";
+import { Button } from "react-native-web";
 
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
 const Users = [
-  { id: "1", uri: require("../assets/present.jpeg"), keyword: "present1" },
-  { id: "2", uri: require("../assets/present2.jpeg"), keyword: "present2" },
-  { id: "3", uri: require("../assets/present3.jpeg"), keyword: "present3" },
-  { id: "4", uri: require("../assets/present4.jpeg"), keyword: "present4" },
-  { id: "5", uri: require("../assets/present5.jpeg"), keyword: "present5" },
+  { id: "1", uri: require("../assets/present.jpeg"), keyword: "present1", slug: 'present1 Slug' },
+  { id: "2", uri: require("../assets/present2.jpeg"), keyword: "present2", slug: 'present2 Slug' },
+  { id: "3", uri: require("../assets/present3.jpeg"), keyword: "present3", slug: 'present3 Slug' },
+  { id: "4", uri: require("../assets/present4.jpeg"), keyword: "present4", slug: 'present4 Slug' },
+  { id: "5", uri: require("../assets/present5.jpeg"), keyword: "present5", slug: 'present5 Slug' },
 ];
-
-// const prefee= []
 
 const Swipe = ( { navigation } ) => {
 
-  let positiveArr = navigation.state.params.positiveML;
-  let negativeArr = navigation.state.params.negativeCategories;
+  let positiveArr = navigation.state.params.positiveCategories;
+  let negativeArr = navigation.state.params.negativeArr;
 
   const [state, setState] = useState({
     currentIndex: 0,
@@ -126,6 +128,7 @@ const Swipe = ( { navigation } ) => {
 
   const updateNegativeData = () => {
     setState((state) => {
+      console.log(state['keyword']);
       negativeArr.push("gift " + state["keyword"]);
       return {
         currentIndex: state?.currentIndex + 1,
@@ -250,11 +253,11 @@ const Swipe = ( { navigation } ) => {
   };
 
   return (
-    <View style={{ flex: 1 }}>
-      <View style={{ height: 60 }}></View>
-      <View style={{ flex: 1 }}>{renderUsers()}</View>
-      <View style={{ height: 60 }}></View>
-    </View>
+          <View style={{ flex: 1 }}>
+            <View style={{ height: 60 }}></View>
+            <View style={{ flex: 1 }}>{renderUsers()}</View>
+            <View style={{ height: 60 }}></View>
+          </View>
   );
 };
 

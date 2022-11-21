@@ -5,10 +5,11 @@ import NegativeCollectForm from "./NegativeCollectForm";
 import { useRoute } from "@react-navigation/native";
 
 const PositiveCollectForm = ( {navigation} ) => {
+let negativeArr = [];
 
   const pressHandler = () => {
     if(positiveCategories.length > 0 && positiveCategories.length < 4){
-      navigation.navigate('NegativeCollectForm', {positiveCategories});
+      navigation.navigate('Swipe', {positiveCategories, negativeArr});
       console.log(positiveCategories)
       setWarningOpacity(0);
   } else if (positiveCategories.length === 0){
