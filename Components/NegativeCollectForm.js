@@ -2,23 +2,39 @@ import { StyleSheet, Text, View, Button } from "react-native";
 import React, {useState} from 'react';
 import { TouchableOpacity } from "react-native-web";
 import positiveCategories from './PositiveCollectForm';
+import Swipe from "./Swipe";
+import { useRoute } from "@react-navigation/native";
 
-const NegativeCollectForm = () => {
-  const [categories, setCategories] = useState([])
+const NegativeCollectForm = ( { navigation }) => {
+  const [negativeCategories, setNegativeCategories] = useState([])
   const [warningOpacity, setWarningOpacity] = useState(0);
-  
+  const [warningMessage, setWarningMessage] = useState('Please select 1 disliked category')
+
+  const positiveML = navigation.state.params.positiveCategories;
+
+  const pressHandler = () => {
+    if(negativeCategories.length > 0 && negativeCategories.length < 2){
+      navigation.navigate('Swipe', {negativeCategories, positiveML});
+      setWarningOpacity(0);
+    } else if (negativeCategories.length > 1) {
+      setWarningMessage('Please only select 1 dislike');
+  } else if (negativeCategories.length === 0){
+      setWarningOpacity(100);
+    }
+  }
+
   const option = [
     "Electronics", "Garden Furniture","Candles","Sports Equipment", "Board Games"
   ]
 
   function pickCategories(selectedCategories){
 
-    if(categories.includes(selectedCategories)){
-      setCategories(categories.filter(Categories => Categories !== selectedCategories))
+    if(negativeCategories.includes(selectedCategories)){
+      setNegativeCategories(negativeCategories.filter(Categories => Categories !== selectedCategories))
       return;
     }
 
-    setCategories(Categories=>Categories.concat(selectedCategories))
+    setNegativeCategories(Categories=>Categories.concat(selectedCategories))
 
   }
 
@@ -30,23 +46,14 @@ const NegativeCollectForm = () => {
           option.map(option =>
             <View key = {option} style={styles.Categories}>
           <TouchableOpacity style={styles.checkBox} onPress={() => pickCategories(option)}>
-           {categories.includes(option) && <Text style={styles.check}>🎅</Text> }
+           {negativeCategories.includes(option) && <Text style={styles.check}>🎅</Text> }
           </TouchableOpacity>
           <Text style={styles.categoryName}>{option}</Text>
           </View>
           
         )}
-        <Button style={styles.submitBtn} title='submit' onPress={()=>{
-          if(categories.length > 0 && categories.length < 4){
-            console.log(positiveCategories)
-            console.log(categories)
-            setWarningOpacity(0);
-          } else if (categories.length === 0){
-            console.log('please select at least 1 like')
-            setWarningOpacity(100);
-          }
-        }}></Button>
-         <Text style={{color: 'red', opacity: warningOpacity}}>Please select 1 Disliked Category</Text>
+        <Button style={styles.submitBtn} title='submit' onPress={pressHandler}></Button>
+         <Text style={{color: 'red', opacity: warningOpacity}}>{warningMessage}</Text>
       </View>
     
     </View>
@@ -80,6 +87,7 @@ const styles = StyleSheet.create({
   options: {
     alignSelf: 'flex-start',
     marginLeft: 50,
+    // textDecorationLine: 'line-through',
 
   },
   title: {

@@ -11,9 +11,6 @@ import {
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
-let positiveArr = [];
-let negativeArr = [];
-
 const Users = [
   { id: "1", uri: require("../assets/present.jpeg"), keyword: "present1" },
   { id: "2", uri: require("../assets/present2.jpeg"), keyword: "present2" },
@@ -24,7 +21,11 @@ const Users = [
 
 // const prefee= []
 
-const Swipe = () => {
+const Swipe = ( { navigation } ) => {
+
+  let positiveArr = navigation.state.params.positiveML;
+  let negativeArr = navigation.state.params.negativeCategories;
+
   const [state, setState] = useState({
     currentIndex: 0,
     keyword: Users[0]["keyword"],
