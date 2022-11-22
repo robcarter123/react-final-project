@@ -7,7 +7,9 @@ import {
   Image,
   TextInput,
   Button,
-  TouchableOpacity
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  ScrollView
 } from "react-native";
 import { fetchUsers } from "../utils";
 
@@ -44,37 +46,42 @@ const WelcomePage = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Image style={styles.image} source={require("./logo-square.png")} />
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
+        <Image style={styles.image} source={require("./logo-square.png")} />
 
-      <StatusBar style="auto" />
-      <View style={styles.inputView}>
-        <TextInput
-          style={styles.TextInput}
-          placeholder="Username."
-          placeholderTextColor="#003f5c"
-          onChangeText={user => setUser(user)}
-        />
-      </View>
+        <StatusBar style="auto" />
+        <View style={styles.inputView}>
+          <TextInput
+            style={styles.TextInput}
+            placeholder="Username."
+            placeholderTextColor="#003f5c"
+            onChangeText={user => setUser(user)}
+          />
+        </View>
 
-      <View style={styles.inputView}>
-        <TextInput
-          style={styles.TextInput}
-          placeholder="Password."
-          placeholderTextColor="#003f5c"
-          secureTextEntry={true}
-          onChangeText={password => setPassword(password)}
-        />
-      </View>
+        <View style={styles.inputView}>
+          <TextInput
+            style={styles.TextInput}
+            placeholder="Password."
+            placeholderTextColor="#003f5c"
+            secureTextEntry={true}
+            onChangeText={password => setPassword(password)}
+          />
+        </View>
 
-      <TouchableOpacity>
-        <Text style={styles.forgot_button}>Forgot Password?</Text>
-      </TouchableOpacity>
+        <TouchableOpacity>
+          <Text style={styles.forgot_button}>Forgot Password?</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity style={styles.loginBtn} onPress={pressHandler}>
-        <Text style={styles.loginText}>LOGIN</Text>
-      </TouchableOpacity>
-    </View>
+        <TouchableOpacity style={styles.loginBtn} onPress={pressHandler}>
+          <Text style={styles.loginText}>LOGIN</Text>
+        </TouchableOpacity>
+      </KeyboardAvoidingView>
+    </ScrollView>
   );
 };
 
@@ -124,69 +131,3 @@ const styles = StyleSheet.create({
 });
 
 export default WelcomePage;
-
-// import "./styles.css";
-
-// import { useState, useContext } from "react";
-// import { fetchUsers } from "../utils";
-
-// import LoadingSpinner from "./LoadingSpinner";
-// import UserLoginContext from "../context/UserLoginContext"
-
-// const Login = () => {
-//   const {user, setUser } = useContext(UserLoginContext);
-
-//   const [username, setUsername] = useState("");
-//   const [isLoading, setIsLoading] = useState(false);
-//   const [errorMessage, setErrorMessage] = useState("");
-//   const [successMessage, setSuccessMessage] = useState("");
-
-//   const handleSubmit = event => {
-//     event.preventDefault();
-//     setErrorMessage("");
-//     setIsLoading(true);
-//     fetchUsers()
-//       .then(data => {
-//         data.map(user => {
-//           if (user.username === username) {
-//             setUser(username);
-//             setSuccessMessage(`You are now logged in as ${username}`);
-//             setUsername("");
-//             setIsLoading(false);
-//             return user;
-//           }
-//         });
-//       })
-//       .catch(() => {
-//         setErrorMessage("Unable to log in, please try again");
-//         setIsLoading(false);
-//         setUsername("");
-//       });
-//   };
-
-//   const renderLogin = (
-//     <div className="loginForm">
-//       <form onSubmit={handleSubmit}>
-//         <label>
-//           Username:
-//           <input
-//             required
-//             name="username"
-//             value={username}
-//             onChange={event => setUsername(event.target.value)}
-//           />
-//         </label>
-//         <button type="submit">Login</button>
-//       </form>
-//       <p className="success">{successMessage}</p>
-//     </div>
-//   );
-//   return (
-//     <div className="loginPoster">
-//       {isLoading ? <LoadingSpinner /> : renderLogin}
-//       {errorMessage && <div className="error">{errorMessage}</div>}
-//     </div>
-//   );
-// };
-
-// export default Login;
