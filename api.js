@@ -32,7 +32,9 @@ export const fetchItemsFromEbay = (keywords) => {
       const itemsToReturn = items.map((item) => {
         item.keyword = item.categories[0].categoryName
           .replaceAll(/[^a-zA-Z\s]+/g, "")
-          .replaceAll(" ", "+");
+          .replaceAll(" ", "+")
+          .replaceAll("++", "+");
+        console.log(item.keyword);
         return item;
       });
       return itemsToReturn;

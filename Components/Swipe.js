@@ -29,7 +29,11 @@ const Swipe = ({ navigation }) => {
   const [count, setCount] = useState(0);
 
   const [Users, setUsers] = useState([
-    // { id: "1", uri: require("../assets/present.jpeg"), keyword: "present1" },
+    // {
+    //   id: "1",
+    //   uri: "https://i.ebayimg.com/thumbs/images/g/LZcAAOSwQOVjWqj5/s-l225.jpg",
+    //   keyword: "present1",
+    // },
     // { id: "2", uri: require("../assets/present2.jpeg"), keyword: "present2" },
     // { id: "3", uri: require("../assets/present3.jpeg"), keyword: "present3" },
     // { id: "4", uri: require("../assets/present4.jpeg"), keyword: "present4" },
@@ -254,7 +258,7 @@ const Swipe = ({ navigation }) => {
                 resizeMode: "cover",
                 borderRadius: 20,
               }}
-              source={item.uri}
+              source={item.image.imageUrl}
             />
           </Animated.View>
         );
@@ -281,7 +285,7 @@ const Swipe = ({ navigation }) => {
                 resizeMode: "cover",
                 borderRadius: 20,
               }}
-              source={item.uri || item.image.imageUrl}
+              source={item.image.imageUrl}
             />
           </Animated.View>
         );
