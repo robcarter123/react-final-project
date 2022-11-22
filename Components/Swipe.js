@@ -29,20 +29,20 @@ const Swipe = ({ navigation }) => {
   const [count, setCount] = useState(0);
 
   const [Users, setUsers] = useState([
-    { id: "1", uri: require("../assets/present.jpeg"), keyword: "present1" },
-    { id: "2", uri: require("../assets/present2.jpeg"), keyword: "present2" },
-    { id: "3", uri: require("../assets/present3.jpeg"), keyword: "present3" },
-    { id: "4", uri: require("../assets/present4.jpeg"), keyword: "present4" },
-    { id: "5", uri: require("../assets/present5.jpeg"), keyword: "present5" },
+    // { id: "1", uri: require("../assets/present.jpeg"), keyword: "present1" },
+    // { id: "2", uri: require("../assets/present2.jpeg"), keyword: "present2" },
+    // { id: "3", uri: require("../assets/present3.jpeg"), keyword: "present3" },
+    // { id: "4", uri: require("../assets/present4.jpeg"), keyword: "present4" },
+    // { id: "5", uri: require("../assets/present5.jpeg"), keyword: "present5" },
   ]);
-
+  const [isLoading, setIsLoading] = useState(false);
   const positiveForm = [["candles", 0.5]];
   let positiveArr = navigation.state.params.positiveML;
   let negativeArr = navigation.state.params.negativeCategories;
 
   const [state, setState] = useState({
-    currentIndex: 0,
-    keyword: Users[0]["keyword"],
+    // currentIndex: 0,
+    // keyword: Users[0]["keyword"],
   });
   const [position, setPosition] = useState(new Animated.ValueXY());
   const [rotate, setRotate] = useState(
@@ -151,27 +151,30 @@ const Swipe = ({ navigation }) => {
     setPosition(position);
   };
 
-  console.log("positiveArr", positiveArr);
-  console.log("negativeArr", negativeArr);
-
   useEffect(() => {
-    console.log(count, "<<<<<<<count");
     if (count === 0) {
-      fetchItemsFromEbay(positiveForm).then(({ items }) => {
-        console.log(items);
+      setIsLoading(true);
+      fetchItemsFromEbay(positiveForm).then((items) => {
         setUsers((current) => {
           const newArr = [...current];
-          return newArr.push(...items);
+          console.log(newArr);
+          setCount((current) => current + 1);
+          return [...newArr, ...items];
         });
+        setIsLoading(false);
+        console.log(Users);
+        setState({ currentIndex: 0, keyword: items[0]["keyword"] });
       });
     }
-    if (count === 3) {
-      fetchItemsFromEbay(preferences).then(({ items }) => {
-        console.log(items);
+    if (count === 4) {
+      setIsLoading(true);
+      fetchItemsFromEbay(preferences).then((items) => {
         setUsers((current) => {
           const newArr = [...current];
-          return newArr.push(...items);
+          setCount((current) => 1);
+          return [...newArr, ...items];
         });
+        setIsLoading(false);
       });
     }
   });
@@ -278,7 +281,7 @@ const Swipe = ({ navigation }) => {
                 resizeMode: "cover",
                 borderRadius: 20,
               }}
-              source={item.uri}
+              source={item.uri || item.image.imageUrl}
             />
           </Animated.View>
         );

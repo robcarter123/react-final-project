@@ -24,14 +24,18 @@ export const fetchItemsFromEbay = (keywords) => {
       return nestedArray[0];
     })
     .join(" ");
-  console.log(searchQuery, "in api");
   return axios
     .get(
       `https://nc-ebay-api.herokuapp.com/api/ebayCall?keyword=${searchQuery}`
     )
-    .then(({ data }) => {
-      console.log(data);
-      return data;
+    .then(({ data: { items } }) => {
+      const itemsToReturn = items.map((item) => {
+        item.keyword = item.categories[0].categoryName
+          .replaceAll(/[^a-zA-Z\s]+/g, "")
+          .replaceAll(" ", "+");
+        return item;
+      });
+      return itemsToReturn;
     })
     .catch((err) => console.log(err));
 };
