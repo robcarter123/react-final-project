@@ -30,7 +30,7 @@ const Swipe = ( { navigation } ) => {
   let newPosArr = [[positiveArr[0],0.02],[positiveArr[1],0.02],[positiveArr[2],0.02]]
 
   const [historyState, setHistoryState] = useState([])
-  console.log(historyState)
+  console.log(historyState, 'historyState')
 
   const [state, setState] = useState({
     currentIndex: 0,
@@ -83,6 +83,10 @@ const Swipe = ( { navigation } ) => {
     })
   );
 
+  const pressHandler = () => {
+    navigation.navigate('History', {historyState});
+  }
+
   const [panResponder, setPanResponder] = useState(
     PanResponder.create({
       onStartShouldSetPanResponder: (evt, gestureState) => true,
@@ -121,7 +125,6 @@ const Swipe = ( { navigation } ) => {
     setState((state) => {
       //trying optional chaining to avoid error when cards gone
       let count = 1;
-      console.log(state)
       for(let i = 0; i < newPosArr.length; i++){
         if(newPosArr[i][0] === state['keyword']){
          newPosArr[i][1] = newPosArr[i][1] + 0.02;
@@ -135,10 +138,12 @@ const Swipe = ( { navigation } ) => {
         newPosArr.push([state['keyword'],0.02])
         console.log(newPosArr)
        }
-       setHistoryState ({keyword:state.keyword,image: state.uri, slug: state.slug})
+       setHistoryState ((historyState) => ([...historyState,{keyword:state.keyword,image: state.uri, slug: state.slug}]))
       return {
         currentIndex: state?.currentIndex + 1,
         keyword: Users?.[state?.currentIndex + 1]?.["keyword"],
+        image: Users?.[state?.currentIndex+1]?.['uri'],
+        slug: Users?.[state?.currentIndex+1]?.['slug']
       };
     });
     position.setValue({ x: 0, y: 0 });
@@ -164,6 +169,8 @@ const Swipe = ( { navigation } ) => {
       return {
         currentIndex: state?.currentIndex + 1,
         keyword: Users?.[state?.currentIndex + 1]?.["keyword"],
+        image: Users?.[state?.currentIndex+1]?.['uri'],
+        slug: Users?.[state?.currentIndex+1]?.['slug']
       };
     });
     position.setValue({ x: 0, y: 0 });
@@ -285,6 +292,7 @@ const Swipe = ( { navigation } ) => {
             <View style={{ height: 60 }}></View>
             <View style={{ flex: 1 }}>{renderUsers()}</View>
             <View style={{ height: 60 }}></View>
+            <Button onPress={pressHandler}>Hello</Button>
           </View>
   );
 };

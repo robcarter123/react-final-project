@@ -7,10 +7,9 @@ import { createNativeStackNavigator } from 'react-navigation-stack';
 
 export default function Header({ navigation }){
 
-  console.log(navigation)
-
     const historyFolder = () => {
-        navigation.navigate('History')
+      console.log('hello');
+      navigation.navigate('History');
     }
 
     return(

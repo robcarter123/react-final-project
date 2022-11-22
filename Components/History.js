@@ -37,6 +37,8 @@ export default function History({navigation}) {
     },  
 ];
 
+console.log(navigation.state.params.historyState)
+
 const onePresent = ( { item } ) => (
 <Card>
     <View style={styles.item}>

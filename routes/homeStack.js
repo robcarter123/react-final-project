@@ -22,7 +22,7 @@ const screens = {
         screen: Swipe,
         navigationOptions: {
             title: '',
-            headerTitle: () => <Header navigation={navigation} />
+            // headerTitle: () => <Header navigation={navigation} />
         },
     },
     History: {
