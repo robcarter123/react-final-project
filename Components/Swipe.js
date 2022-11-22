@@ -6,29 +6,48 @@ import {
   Image,
   Animated,
   PanResponder,
+  Linking,
 } from "react-native";
+import { fetchItemsFromEbay } from "../api.js";
 
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
-const Users = [
-  { id: "1", uri: require("../assets/present.jpeg"), keyword: "present1" },
-  { id: "2", uri: require("../assets/present2.jpeg"), keyword: "present2" },
-  { id: "3", uri: require("../assets/present3.jpeg"), keyword: "present3" },
-  { id: "4", uri: require("../assets/present4.jpeg"), keyword: "present4" },
-  { id: "5", uri: require("../assets/present5.jpeg"), keyword: "present5" },
+const preferences = [
+  ["doll", 0.7578607797622681],
+  ["shoe", 0.7505601048469543],
+  ["dolls", 0.7128548622131348],
+  ["handbag", 0.6836262941360474],
+  ["boots", 0.6653067469596863],
+  ["shoes", 0.6612709760665894],
+  ["candy", 0.6533358693122864],
+  ["jewelry", 0.6434913277626038],
+  ["denim", 0.6392609477043152],
+  ["wig", 0.6287851929664612],
 ];
 
-// const prefee= []
+const Swipe = ({ navigation }) => {
+  const [count, setCount] = useState(0);
 
-const Swipe = ( { navigation } ) => {
-
-  let positiveArr = navigation.state.params.positiveML;
+  const [Users, setUsers] = useState([
+    // {
+    //   id: "1",
+    //   uri: "https://i.ebayimg.com/thumbs/images/g/LZcAAOSwQOVjWqj5/s-l225.jpg",
+    //   keyword: "present1",
+    // },
+    // { id: "2", uri: require("../assets/present2.jpeg"), keyword: "present2" },
+    // { id: "3", uri: require("../assets/present3.jpeg"), keyword: "present3" },
+    // { id: "4", uri: require("../assets/present4.jpeg"), keyword: "present4" },
+    // { id: "5", uri: require("../assets/present5.jpeg"), keyword: "present5" },
+  ]);
+  const [isLoading, setIsLoading] = useState(false);
+  const positiveForm = [["candles", 0.5]];
+  let positiveArr = [[...navigation.state.params.positiveML, 0.5]];
   let negativeArr = navigation.state.params.negativeCategories;
 
   const [state, setState] = useState({
-    currentIndex: 0,
-    keyword: Users[0]["keyword"],
+    // currentIndex: 0,
+    // keyword: Users[0]["keyword"],
   });
   const [position, setPosition] = useState(new Animated.ValueXY());
   const [rotate, setRotate] = useState(
@@ -112,6 +131,7 @@ const Swipe = ( { navigation } ) => {
   );
 
   const updateData = () => {
+    setCount((current) => current + 1);
     setState((state) => {
       positiveArr.push("gift " + state["keyword"]);
       //trying optional chaining to avoid error when cards gone
@@ -136,8 +156,30 @@ const Swipe = ( { navigation } ) => {
     setPosition(position);
   };
 
-  console.log("positiveArr", positiveArr);
-  console.log("negativeArr", negativeArr);
+  useEffect(() => {
+    if (count === 0) {
+      console.log(positiveArr);
+      setIsLoading(true);
+      fetchItemsFromEbay(positiveArr).then((items) => {
+        setUsers(items);
+        setCount((current) => current + 1);
+        setIsLoading(false);
+        console.log(Users);
+        setState({ currentIndex: 0, keyword: items[0]["keyword"] });
+      });
+    }
+    if (count === 4) {
+      setIsLoading(true);
+      fetchItemsFromEbay(preferences).then((items) => {
+        setUsers((current) => {
+          const newArr = [...current];
+          setCount((current) => 1);
+          return [...newArr, ...items];
+        });
+        setIsLoading(false);
+      });
+    }
+  });
 
   const renderUsers = () => {
     return Users.map((item, i) => {
@@ -205,7 +247,13 @@ const Swipe = ( { navigation } ) => {
                 NOPE
               </Text>
             </Animated.View>
-
+            <Text
+              style={{ color: "blue" }}
+              onPress={() => Linking.openURL(item.itemWebUrl)}
+            >
+              {item.title}
+            </Text>
+            <Text>£{item.price.value}</Text>
             <Image
               style={{
                 flex: 1,
@@ -214,7 +262,7 @@ const Swipe = ( { navigation } ) => {
                 resizeMode: "cover",
                 borderRadius: 20,
               }}
-              source={item.uri}
+              source={item.image.imageUrl}
             />
           </Animated.View>
         );
@@ -241,7 +289,7 @@ const Swipe = ( { navigation } ) => {
                 resizeMode: "cover",
                 borderRadius: 20,
               }}
-              source={item.uri}
+              source={item.image.imageUrl}
             />
           </Animated.View>
         );
