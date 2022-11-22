@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, Button } from "react-native";
 import React, {useState} from 'react';
-import { TouchableOpacity } from "react-native-web";
+import { TouchableOpacity } from "react-native";
 import positiveCategories from './PositiveCollectForm';
 import Swipe from "./Swipe";
 import { useRoute } from "@react-navigation/native";
