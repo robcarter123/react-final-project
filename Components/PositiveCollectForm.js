@@ -8,12 +8,11 @@ const PositiveCollectForm = ( {navigation} ) => {
 let negativeArr = [];
 
   const pressHandler = () => {
-    if(positiveCategories.length > 0 && positiveCategories.length < 4){
+    if(positiveCategories.length === 3){
       navigation.navigate('Swipe', {positiveCategories, negativeArr});
       console.log(positiveCategories)
       setWarningOpacity(0);
-  } else if (positiveCategories.length === 0){
-      console.log('please select at least 1 like')
+  } else if (positiveCategories.length !== 3){
       setWarningOpacity(100);
     }
   }
@@ -50,7 +49,7 @@ let negativeArr = [];
           
         )}
         <Button style={styles.submitBtn} title='submit' onPress={pressHandler} />
-         <Text style={{color: 'red', opacity: warningOpacity}}>Please select at least 1 Like</Text>
+         <Text style={{color: 'red', opacity: warningOpacity}}>Please select 3 Likes</Text>
       </View>
     
     </View>

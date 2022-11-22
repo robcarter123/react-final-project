@@ -16,17 +16,18 @@ const SCREEN_HEIGHT = Dimensions.get("window").height;
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
 const Users = [
-  { id: "1", uri: require("../assets/present.jpeg"), keyword: "present1", slug: 'present1 Slug' },
-  { id: "2", uri: require("../assets/present2.jpeg"), keyword: "present2", slug: 'present2 Slug' },
+  { id: "1", uri: require("../assets/present.jpeg"), keyword: "Electronics", slug: 'present1 Slug' },
+  { id: "2", uri: require("../assets/present2.jpeg"), keyword: "Garden Furniture", slug: 'present2 Slug' },
   { id: "3", uri: require("../assets/present3.jpeg"), keyword: "present3", slug: 'present3 Slug' },
   { id: "4", uri: require("../assets/present4.jpeg"), keyword: "present4", slug: 'present4 Slug' },
-  { id: "5", uri: require("../assets/present5.jpeg"), keyword: "present5", slug: 'present5 Slug' },
+  { id: "5", uri: require("../assets/present5.jpeg"), keyword: "present3", slug: 'present5 Slug' },
 ];
 
 const Swipe = ( { navigation } ) => {
 
   let positiveArr = navigation.state.params.positiveCategories;
-  let negativeArr = navigation.state.params.negativeArr;
+
+  let newPosArr = [[positiveArr[0],0.02],[positiveArr[1],0.02],[positiveArr[2],0.02]]
 
   const [state, setState] = useState({
     currentIndex: 0,
@@ -76,8 +77,6 @@ const Swipe = ( { navigation } ) => {
       extrapolate: "clamp",
     })
   );
-  const [positive, setPositive] = useState(false);
-  const [negative, setNegative] = useState(false);
 
   const [panResponder, setPanResponder] = useState(
     PanResponder.create({
@@ -115,8 +114,21 @@ const Swipe = ( { navigation } ) => {
 
   const updateData = () => {
     setState((state) => {
-      positiveArr.push("gift " + state["keyword"]);
       //trying optional chaining to avoid error when cards gone
+      let count = 1;
+      for(let i = 0; i < newPosArr.length; i++){
+        if(newPosArr[i][0] === state['keyword']){
+         newPosArr[i][1] = newPosArr[i][1] + 0.02;
+         console.log(newPosArr);
+         break;
+        } else {
+          count++;
+        }
+      }
+      if(count===newPosArr.length+1){
+        newPosArr.push([state['keyword'],0.02])
+        console.log(newPosArr)
+       }
       return {
         currentIndex: state?.currentIndex + 1,
         keyword: Users?.[state?.currentIndex + 1]?.["keyword"],
@@ -128,8 +140,20 @@ const Swipe = ( { navigation } ) => {
 
   const updateNegativeData = () => {
     setState((state) => {
-      console.log(state['keyword']);
-      negativeArr.push("gift " + state["keyword"]);
+      let count = 1;
+      for(let i = 0; i < newPosArr.length; i++){
+        if(newPosArr[i][0] === state['keyword']){
+         newPosArr[i][1] = newPosArr[i][1] - 0.01;
+         console.log(newPosArr);
+         break;
+        } else {
+          count++;
+        }
+      }
+      if(count===newPosArr.length+1){
+        newPosArr.push([state['keyword'],-0.01])
+        console.log(newPosArr)
+       }
       return {
         currentIndex: state?.currentIndex + 1,
         keyword: Users?.[state?.currentIndex + 1]?.["keyword"],
@@ -138,9 +162,6 @@ const Swipe = ( { navigation } ) => {
     position.setValue({ x: 0, y: 0 });
     setPosition(position);
   };
-
-  console.log("positiveArr", positiveArr);
-  console.log("negativeArr", negativeArr);
 
   const renderUsers = () => {
     return Users.map((item, i) => {
