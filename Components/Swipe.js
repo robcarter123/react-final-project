@@ -7,25 +7,36 @@ import {
   Animated,
   PanResponder,
 } from "react-native";
-import { fetchItemsFromEbay } from "../api";
+import { fetchItemsFromEbay } from "../api.js";
 
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
-const [count, setCount] = useState("")
-
-const Users = [
-  { id: "1", uri: require("../assets/present.jpeg"), keyword: "present1" },
-  { id: "2", uri: require("../assets/present2.jpeg"), keyword: "present2" },
-  { id: "3", uri: require("../assets/present3.jpeg"), keyword: "present3" },
-  { id: "4", uri: require("../assets/present4.jpeg"), keyword: "present4" },
-  { id: "5", uri: require("../assets/present5.jpeg"), keyword: "present5" },
+const preferences = [
+  ["doll", 0.7578607797622681],
+  ["shoe", 0.7505601048469543],
+  ["dolls", 0.7128548622131348],
+  ["handbag", 0.6836262941360474],
+  ["boots", 0.6653067469596863],
+  ["shoes", 0.6612709760665894],
+  ["candy", 0.6533358693122864],
+  ["jewelry", 0.6434913277626038],
+  ["denim", 0.6392609477043152],
+  ["wig", 0.6287851929664612],
 ];
 
-// const prefee= []
+const Swipe = ({ navigation }) => {
+  const [count, setCount] = useState(0);
 
-const Swipe = ( { navigation } ) => {
+  const [Users, setUsers] = useState([
+    { id: "1", uri: require("../assets/present.jpeg"), keyword: "present1" },
+    { id: "2", uri: require("../assets/present2.jpeg"), keyword: "present2" },
+    { id: "3", uri: require("../assets/present3.jpeg"), keyword: "present3" },
+    { id: "4", uri: require("../assets/present4.jpeg"), keyword: "present4" },
+    { id: "5", uri: require("../assets/present5.jpeg"), keyword: "present5" },
+  ]);
 
+  const positiveForm = [["candles", 0.5]];
   let positiveArr = navigation.state.params.positiveML;
   let negativeArr = navigation.state.params.negativeCategories;
 
@@ -115,6 +126,7 @@ const Swipe = ( { navigation } ) => {
   );
 
   const updateData = () => {
+    setCount((current) => current + 1);
     setState((state) => {
       positiveArr.push("gift " + state["keyword"]);
       //trying optional chaining to avoid error when cards gone
@@ -142,22 +154,30 @@ const Swipe = ( { navigation } ) => {
   console.log("positiveArr", positiveArr);
   console.log("negativeArr", negativeArr);
 
- 
   useEffect(() => {
-    if (count ===3){
-
+    console.log(count, "<<<<<<<count");
+    if (count === 0) {
+      fetchItemsFromEbay(positiveForm).then(({ items }) => {
+        console.log(items);
+        setUsers((current) => {
+          const newArr = [...current];
+          return newArr.push(...items);
+        });
+      });
     }
-    
-  }, [count])
-  fetchItemsFromEbay()
-  .then((data) => {
-    console.log(data)
-  })
-
+    if (count === 3) {
+      fetchItemsFromEbay(preferences).then(({ items }) => {
+        console.log(items);
+        setUsers((current) => {
+          const newArr = [...current];
+          return newArr.push(...items);
+        });
+      });
+    }
+  });
 
   const renderUsers = () => {
     return Users.map((item, i) => {
-      count++
       if (i < state.currentIndex) {
         return null;
       } else if (i == state.currentIndex) {
