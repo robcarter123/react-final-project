@@ -10,12 +10,11 @@ import Header from '../Components/shared/Header';
 
 const screens = {
     
-    
     PositiveCollectForm: {
         screen: PositiveCollectForm,
         navigationOptions: ({ navigation }) => {
             return {
-                headerTitle: () => <Header navigation={navigation} />
+                // headerTitle: () => <Header navigation={navigation} />
             }
         }
     },
@@ -25,6 +24,7 @@ const screens = {
             title: '',
             headerTitle: () => <Header navigation={navigation} />
         },
+    },
     History: {
         screen: History,
         navigationOptions: {
@@ -32,17 +32,9 @@ const screens = {
             headerStyle: {backgroundColor: '#555'}
         }
     },
-    }
     
 }
 
 const HomeStack = createStackNavigator(screens);
 
 export default createAppContainer(HomeStack);
-
-  // NegativeCollectForm: {
-    //     screen: NegativeCollectForm
-    //     },navigationOptions: {
-        //     title: 'hello',
-        //     headerStyle: {backgroundColor: '#555'}
-        // }

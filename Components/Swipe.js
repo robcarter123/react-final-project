@@ -29,9 +29,14 @@ const Swipe = ( { navigation } ) => {
 
   let newPosArr = [[positiveArr[0],0.02],[positiveArr[1],0.02],[positiveArr[2],0.02]]
 
+  const [historyState, setHistoryState] = useState([])
+  console.log(historyState)
+
   const [state, setState] = useState({
     currentIndex: 0,
     keyword: Users[0]["keyword"],
+    image: Users[0]['uri'],
+    slug: Users[0]['slug']
   });
   const [position, setPosition] = useState(new Animated.ValueXY());
   const [rotate, setRotate] = useState(
@@ -116,6 +121,7 @@ const Swipe = ( { navigation } ) => {
     setState((state) => {
       //trying optional chaining to avoid error when cards gone
       let count = 1;
+      console.log(state)
       for(let i = 0; i < newPosArr.length; i++){
         if(newPosArr[i][0] === state['keyword']){
          newPosArr[i][1] = newPosArr[i][1] + 0.02;
@@ -129,6 +135,7 @@ const Swipe = ( { navigation } ) => {
         newPosArr.push([state['keyword'],0.02])
         console.log(newPosArr)
        }
+       setHistoryState ({keyword:state.keyword,image: state.uri, slug: state.slug})
       return {
         currentIndex: state?.currentIndex + 1,
         keyword: Users?.[state?.currentIndex + 1]?.["keyword"],

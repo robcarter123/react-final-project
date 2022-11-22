@@ -1,11 +1,15 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {MaterialIcons} from '@expo/vector-icons';
+import History from '../History'
+import { NavigationContainer, StackActions } from "@react-navigation/native";
+import { createNativeStackNavigator } from 'react-navigation-stack';
 
 export default function Header({ navigation }){
 
+  console.log(navigation)
+
     const historyFolder = () => {
-        console.log(navigation.navigate)
         navigation.navigate('History')
     }
 
@@ -36,6 +40,6 @@ const styles = StyleSheet.create({
     },
     icon:{
       position: 'absolute',
-      left: 16,  
+      right: 16,  
     }
   })

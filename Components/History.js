@@ -1,7 +1,10 @@
 import { StyleSheet, Text, View, FlatList, SafeAreaView, Image } from 'react-native'
 import Card from './shared/Card';
+import React from 'react';
+import { NavigationContainer, StackActions } from "@react-navigation/native";
+import { createNativeStackNavigator } from 'react-navigation-stack';
 
-export default function App({navigation}) {
+export default function History({navigation}) {
     const present = [{
         id: 1,
         name: 'PresentOne',
