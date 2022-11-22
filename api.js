@@ -1,11 +1,14 @@
 import axios from "axios";
-const positive = ["King", "Man"];
-const negative = ["queen"];
+// const positive = ["King", "Man"];
+// const negative = ["queen"];
 export const postWordToModel = (pos, neg) => {
-  const positive = pos.map((word) => word.toLowerCase());
+  console.log(pos, "pos");
+  const positive = pos.map((word) => word[0].toLowerCase());
   const negative = neg.map((word) => word.toLowerCase());
-  axios
-    .post("https://flask-keyword-api.herokuapp.com/model", {
+  console.log(positive);
+  console.log(negative);
+  return axios
+    .post("http://127.0.0.1:5000/model", {
       positive,
       negative,
     })
@@ -34,13 +37,12 @@ export const fetchItemsFromEbay = (keywords) => {
           .replaceAll(/[^a-zA-Z\s]+/g, "")
           .replaceAll(" ", "+")
           .replaceAll("++", "+");
-        console.log(item.keyword);
         return item;
       });
       return itemsToReturn;
     })
     .catch((err) => console.log(err));
 };
-// fetchItemsFromEbay([]);
+fetchItemsFromEbay([]);
 
 // module.exports = { postWordToModel, fetchItemsFromEbay };

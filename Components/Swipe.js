@@ -8,7 +8,7 @@ import {
   PanResponder,
   Linking,
 } from "react-native";
-import { fetchItemsFromEbay } from "../api.js";
+import { fetchItemsFromEbay, postWordToModel } from "../api.js";
 
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 const SCREEN_WIDTH = Dimensions.get("window").width;
@@ -28,7 +28,7 @@ const preferences = [
 
 const Swipe = ({ navigation }) => {
   const [count, setCount] = useState(0);
-
+  const [modelCount, setModelCount] = useState(0);
   const [Users, setUsers] = useState([
     // {
     //   id: "1",
@@ -132,6 +132,7 @@ const Swipe = ({ navigation }) => {
 
   const updateData = () => {
     setCount((current) => current + 1);
+    setModelCount((current) => current + 1);
     setState((state) => {
       positiveArr.push("gift " + state["keyword"]);
       //trying optional chaining to avoid error when cards gone
@@ -155,6 +156,15 @@ const Swipe = ({ navigation }) => {
     position.setValue({ x: 0, y: 0 });
     setPosition(position);
   };
+
+  useEffect(() => {
+    if (modelCount === 3) {
+      postWordToModel(positiveArr, negativeArr).then((data) => {
+        positiveArr.push(...data.keywords);
+        console.log(positiveArr);
+      });
+    }
+  }, [modelCount]);
 
   useEffect(() => {
     if (count === 0) {
