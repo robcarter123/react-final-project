@@ -9,19 +9,13 @@ import {
   Image,
   Animated,
   PanResponder,
+  Linking,
 } from "react-native";
 import { Button } from "react-native-web";
+import { fetchItemsFromEbay } from "../api.js";
 
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 const SCREEN_WIDTH = Dimensions.get("window").width;
-
-const Users = [
-  { id: "1", uri: require("../assets/present.jpeg"), keyword: "Electronics", slug: 'present1 Slug' },
-  { id: "2", uri: require("../assets/present2.jpeg"), keyword: "Garden Furniture", slug: 'present2 Slug' },
-  { id: "3", uri: require("../assets/present3.jpeg"), keyword: "present3", slug: 'present3 Slug' },
-  { id: "4", uri: require("../assets/present4.jpeg"), keyword: "present4", slug: 'present4 Slug' },
-  { id: "5", uri: require("../assets/present5.jpeg"), keyword: "present3", slug: 'present5 Slug' },
-];
 
 const Swipe = ( { navigation } ) => {
 
@@ -33,11 +27,30 @@ const Swipe = ( { navigation } ) => {
   console.log(historyState, 'historyState')
 
   const [state, setState] = useState({
-    currentIndex: 0,
-    keyword: Users[0]["keyword"],
-    image: Users[0]['uri'],
-    slug: Users[0]['slug']
-  });
+  })
+
+const preferences = [
+  ["doll", 0.7578607797622681],
+  ["shoe", 0.7505601048469543],
+  ["dolls", 0.7128548622131348],
+  ["handbag", 0.6836262941360474],
+  ["boots", 0.6653067469596863],
+  ["shoes", 0.6612709760665894],
+  ["candy", 0.6533358693122864],
+  ["jewelry", 0.6434913277626038],
+  ["denim", 0.6392609477043152],
+  ["wig", 0.6287851929664612],
+];
+
+  const [count, setCount] = useState(0);
+
+  const [Users, setUsers] = useState([
+  ]);
+
+  const [isLoading, setIsLoading] = useState(false);
+  const positiveForm = [["candles", 0.5]];
+  let negativeArr = navigation.state.params.negativeCategories;
+
   const [position, setPosition] = useState(new Animated.ValueXY());
   const [rotate, setRotate] = useState(
     position.x.interpolate({
@@ -122,6 +135,7 @@ const Swipe = ( { navigation } ) => {
   );
 
   const updateData = () => {
+    setCount((current) => current + 1);
     setState((state) => {
       //trying optional chaining to avoid error when cards gone
       let count = 1;
@@ -138,11 +152,12 @@ const Swipe = ( { navigation } ) => {
         newPosArr.push([state['keyword'],0.02])
         console.log(newPosArr)
        }
-       setHistoryState ((historyState) => ([...historyState,{keyword:state.keyword,image: state.uri, slug: state.slug}]))
+       setHistoryState ((current) => ([...current,{keyword:state.keyword,image: state.image, slug: state.slug}]))
+       console.log(Users, 'currentIndex')
       return {
         currentIndex: state?.currentIndex + 1,
         keyword: Users?.[state?.currentIndex + 1]?.["keyword"],
-        image: Users?.[state?.currentIndex+1]?.['uri'],
+        image: Users?.[state?.currentIndex+1]?.image.imageUrl,
         slug: Users?.[state?.currentIndex+1]?.['slug']
       };
     });
@@ -166,16 +181,45 @@ const Swipe = ( { navigation } ) => {
         newPosArr.push([state['keyword'],-0.01])
         console.log(newPosArr)
        }
+       console.log(state.currentIndex, 'currentIndex')
       return {
         currentIndex: state?.currentIndex + 1,
         keyword: Users?.[state?.currentIndex + 1]?.["keyword"],
-        image: Users?.[state?.currentIndex+1]?.['uri'],
+        image: Users?.[state?.currentIndex+1]?.image.imageUrl,
         slug: Users?.[state?.currentIndex+1]?.['slug']
       };
     });
     position.setValue({ x: 0, y: 0 });
     setPosition(position);
   };
+
+  useEffect(() => {
+    if (count === 0) {
+      console.log(positiveArr);
+      setIsLoading(true);
+      fetchItemsFromEbay(positiveArr).then((items) => {
+        setUsers((current) => items);
+        setCount((current) => current + 1);
+        setIsLoading(false);
+        console.log(Users, 'Users');
+        setState({ currentIndex: 0,
+          keyword: items[0]["keyword"],
+          image: items[0].image.imageUrl,
+          slug: items[0]['slug'] });
+      });
+    }
+    if (count === 4) {
+      setIsLoading(true);
+      fetchItemsFromEbay(preferences).then((items) => {
+        setUsers((current) => {
+          const newArr = [...current];
+          setCount((current) => 1);
+          return [...newArr, ...items];
+        });
+        setIsLoading(false);
+      });
+    }
+  });
 
   const renderUsers = () => {
     return Users.map((item, i) => {
@@ -243,7 +287,13 @@ const Swipe = ( { navigation } ) => {
                 NOPE
               </Text>
             </Animated.View>
-
+            <Text
+              style={{ color: "blue" }}
+              onPress={() => Linking.openURL(item.itemWebUrl)}
+            >
+              {item.title}
+            </Text>
+            <Text>£{item.price.value}</Text>
             <Image
               style={{
                 flex: 1,
@@ -252,7 +302,7 @@ const Swipe = ( { navigation } ) => {
                 resizeMode: "cover",
                 borderRadius: 20,
               }}
-              source={item.uri}
+              source={item.image.imageUrl}
             />
           </Animated.View>
         );
@@ -279,7 +329,7 @@ const Swipe = ( { navigation } ) => {
                 resizeMode: "cover",
                 borderRadius: 20,
               }}
-              source={item.uri}
+              source={item.image.imageUrl}
             />
           </Animated.View>
         );

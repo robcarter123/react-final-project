@@ -1,7 +1,7 @@
-const axios = require("axios");
+import axios from "axios";
 const positive = ["King", "Man"];
 const negative = ["queen"];
-const postWordToModel = (pos, neg) => {
+export const postWordToModel = (pos, neg) => {
   const positive = pos.map((word) => word.toLowerCase());
   const negative = neg.map((word) => word.toLowerCase());
   axios
@@ -17,24 +17,30 @@ const postWordToModel = (pos, neg) => {
 };
 // postModeledWord(positive, negative);
 
-const fetchItemsFromEbay = (keywords) => {
+export const fetchItemsFromEbay = (keywords) => {
   const searchQuery = keywords
     .slice(0, 4)
     .map((nestedArray) => {
       return nestedArray[0];
     })
     .join(" ");
-
   return axios
     .get(
       `https://nc-ebay-api.herokuapp.com/api/ebayCall?keyword=${searchQuery}`
     )
-    .then(({ data }) => {
-      console.log(data);
-      return data;
+    .then(({ data: { items } }) => {
+      const itemsToReturn = items.map((item) => {
+        item.keyword = item.categories[0].categoryName
+          .replaceAll(/[^a-zA-Z\s]+/g, "")
+          .replaceAll(" ", "+")
+          .replaceAll("++", "+");
+        console.log(item.keyword);
+        return item;
+      });
+      return itemsToReturn;
     })
     .catch((err) => console.log(err));
 };
-// fetchItemsFromEbay(keywords);
+// fetchItemsFromEbay([]);
 
-module.exports = { postWordToModel, fetchItemsFromEbay };
+// module.exports = { postWordToModel, fetchItemsFromEbay };
