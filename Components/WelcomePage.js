@@ -6,10 +6,11 @@ import {
   View,
   Image,
   TextInput,
-  Button,
   TouchableOpacity,
   KeyboardAvoidingView,
-  ScrollView
+  ScrollView,
+  ActivityIndicator,
+  SafeAreaView
 } from "react-native";
 import { fetchUsers } from "../utils";
 
@@ -17,35 +18,33 @@ const WelcomePage = () => {
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [warningOpacity, setWarningOpacity] = useState(0);
 
   const pressHandler = () => {
-    //setErrorMessage("");
-    //setIsLoading(true);
-    console.log(user);
-    console.log(password);
+    setWarningOpacity(0);
+    setIsLoading(true);
 
     fetchUsers()
       .then(data => {
-        console.log(data);
+      
         data.forEach(u => {
           console.log(u.username === user, u.password === password);
           if (u.username === user && u.password === password) {
             console.log("yay!");
-            //setUser(username);
             navigation.navigate("PositiveCollectForm", { user });
-            //setIsLoading(false);
+            setIsLoading(false);
+            setWarningOpacity(0);
           }
         });
       })
       .catch(() => {
-        setErrorMessage("Unable to log in, please try again");
+        setWarningOpacity(100);
         setIsLoading(false);
         setUser("");
       });
   };
 
-  return (
+  const renderLogin = (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <KeyboardAvoidingView
         style={styles.container}
@@ -80,9 +79,16 @@ const WelcomePage = () => {
         <TouchableOpacity style={styles.loginBtn} onPress={pressHandler}>
           <Text style={styles.loginText}>LOGIN</Text>
         </TouchableOpacity>
+
+        <Text style={{color: 'red', opacity: warningOpacity}}>unable to log in, please try again</Text>
       </KeyboardAvoidingView>
     </ScrollView>
   );
+  return (
+      <SafeAreaView>
+      {isLoading ? <ActivityIndicator /> : renderLogin}
+    </SafeAreaView>
+  )
 };
 
 const styles = StyleSheet.create({
