@@ -6,6 +6,7 @@ import {
   Image,
   Animated,
   PanResponder,
+  Linking,
 } from "react-native";
 import { fetchItemsFromEbay } from "../api.js";
 
@@ -41,7 +42,7 @@ const Swipe = ({ navigation }) => {
   ]);
   const [isLoading, setIsLoading] = useState(false);
   const positiveForm = [["candles", 0.5]];
-  let positiveArr = navigation.state.params.positiveML;
+  let positiveArr = [[...navigation.state.params.positiveML, 0.5]];
   let negativeArr = navigation.state.params.negativeCategories;
 
   const [state, setState] = useState({
@@ -157,14 +158,11 @@ const Swipe = ({ navigation }) => {
 
   useEffect(() => {
     if (count === 0) {
+      console.log(positiveArr);
       setIsLoading(true);
-      fetchItemsFromEbay(positiveForm).then((items) => {
-        setUsers((current) => {
-          const newArr = [...current];
-          console.log(newArr);
-          setCount((current) => current + 1);
-          return [...newArr, ...items];
-        });
+      fetchItemsFromEbay(positiveArr).then((items) => {
+        setUsers(items);
+        setCount((current) => current + 1);
         setIsLoading(false);
         console.log(Users);
         setState({ currentIndex: 0, keyword: items[0]["keyword"] });
@@ -249,7 +247,13 @@ const Swipe = ({ navigation }) => {
                 NOPE
               </Text>
             </Animated.View>
-
+            <Text
+              style={{ color: "blue" }}
+              onPress={() => Linking.openURL(item.itemWebUrl)}
+            >
+              {item.title}
+            </Text>
+            <Text>£{item.price.value}</Text>
             <Image
               style={{
                 flex: 1,
