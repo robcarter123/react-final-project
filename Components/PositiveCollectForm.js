@@ -6,14 +6,14 @@ import { TouchableOpacity } from "react-native";
 import { useRoute } from "@react-navigation/native";
 
 const PositiveCollectForm = ( {navigation} ) => {
+let negativeArr = [];
 
   const pressHandler = () => {
-    if(positiveCategories.length > 0 && positiveCategories.length < 4){
-      navigation.navigate('NegativeCollectForm', {positiveCategories});
+    if(positiveCategories.length === 3){
+      navigation.navigate('Swipe', {positiveCategories, negativeArr});
       console.log(positiveCategories)
       setWarningOpacity(0);
-  } else if (positiveCategories.length === 0){
-      console.log('please select at least 1 like')
+  } else if (positiveCategories.length !== 3){
       setWarningOpacity(100);
     }
   }
@@ -50,7 +50,7 @@ const PositiveCollectForm = ( {navigation} ) => {
           
         )}
         <Button style={styles.submitBtn} title='submit' onPress={pressHandler} />
-         <Text style={{color: 'red', opacity: warningOpacity}}>Please select at least 1 Like</Text>
+         <Text style={{color: 'red', opacity: warningOpacity}}>Please select 3 Likes</Text>
       </View>
     
     </View>

@@ -1,4 +1,7 @@
+import { NavigationContainer, StackActions } from "@react-navigation/native";
+import { createNativeStackNavigator } from "react-navigation-stack";
 import React, { useState, useEffect } from "react";
+import { StyleSheet } from "react-native";
 import {
   Text,
   View,
@@ -8,37 +11,46 @@ import {
   PanResponder,
   Linking,
 } from "react-native";
+import { Button } from "react-native";
 import { fetchItemsFromEbay, postWordToModel } from "../api.js";
 
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
-const preferences = [
-  ["doll", 0.7578607797622681],
-  ["shoe", 0.7505601048469543],
-  ["dolls", 0.7128548622131348],
-  ["handbag", 0.6836262941360474],
-  ["boots", 0.6653067469596863],
-  ["shoes", 0.6612709760665894],
-  ["candy", 0.6533358693122864],
-  ["jewelry", 0.6434913277626038],
-  ["denim", 0.6392609477043152],
-  ["wig", 0.6287851929664612],
-];
-
 const Swipe = ({ navigation }) => {
+  let positiveArr = navigation.state.params.positiveCategories;
+
+  let newPosArr = [
+    [positiveArr[0], 0.02],
+    [positiveArr[1], 0.02],
+    [positiveArr[2], 0.02],
+  ];
+
+  const [historyState, setHistoryState] = useState([]);
+  console.log(historyState, "historyState");
+
+  const [state, setState] = useState({});
+
+  const preferences = [
+    ["doll", 0.7578607797622681],
+    ["shoe", 0.7505601048469543],
+    ["dolls", 0.7128548622131348],
+    ["handbag", 0.6836262941360474],
+    ["boots", 0.6653067469596863],
+    ["shoes", 0.6612709760665894],
+    ["candy", 0.6533358693122864],
+    ["jewelry", 0.6434913277626038],
+    ["denim", 0.6392609477043152],
+    ["wig", 0.6287851929664612],
+  ];
+
   const [count, setCount] = useState(0);
   const [modelCount, setModelCount] = useState(0);
   const [Users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const positiveForm = [["candles", 0.5]];
-  let positiveArr = [[...navigation.state.params.positiveML, 0.5]];
   let negativeArr = navigation.state.params.negativeCategories;
 
-  const [state, setState] = useState({
-    // currentIndex: 0,
-    // keyword: Users[0]["keyword"],
-  });
   const [position, setPosition] = useState(new Animated.ValueXY());
   const [rotate, setRotate] = useState(
     position.x.interpolate({
@@ -83,8 +95,10 @@ const Swipe = ({ navigation }) => {
       extrapolate: "clamp",
     })
   );
-  const [positive, setPositive] = useState(false);
-  const [negative, setNegative] = useState(false);
+
+  const pressHandler = () => {
+    navigation.navigate("History", { historyState });
+  };
 
   const [panResponder, setPanResponder] = useState(
     PanResponder.create({
@@ -124,11 +138,31 @@ const Swipe = ({ navigation }) => {
     setCount((current) => current + 1);
     setModelCount((current) => current + 1);
     setState((state) => {
-      positiveArr.push("gift " + state["keyword"]);
       //trying optional chaining to avoid error when cards gone
+      let count = 1;
+      for (let i = 0; i < newPosArr.length; i++) {
+        if (newPosArr[i][0] === state["keyword"]) {
+          newPosArr[i][1] = newPosArr[i][1] + 0.02;
+          console.log(newPosArr);
+          break;
+        } else {
+          count++;
+        }
+      }
+      if (count === newPosArr.length + 1) {
+        newPosArr.push([state["keyword"], 0.02]);
+        console.log(newPosArr);
+      }
+      setHistoryState((current) => [
+        ...current,
+        { keyword: state.keyword, image: state.image, slug: state.slug },
+      ]);
+      console.log(Users, "currentIndex");
       return {
         currentIndex: state?.currentIndex + 1,
         keyword: Users?.[state?.currentIndex + 1]?.["keyword"],
+        image: Users?.[state?.currentIndex + 1]?.image.imageUrl,
+        slug: Users?.[state?.currentIndex + 1]?.["slug"],
       };
     });
     position.setValue({ x: 0, y: 0 });
@@ -137,10 +171,26 @@ const Swipe = ({ navigation }) => {
 
   const updateNegativeData = () => {
     setState((state) => {
-      negativeArr.push("gift " + state["keyword"]);
+      let count = 1;
+      for (let i = 0; i < newPosArr.length; i++) {
+        if (newPosArr[i][0] === state["keyword"]) {
+          newPosArr[i][1] = newPosArr[i][1] - 0.01;
+          console.log(newPosArr);
+          break;
+        } else {
+          count++;
+        }
+      }
+      if (count === newPosArr.length + 1) {
+        newPosArr.push([state["keyword"], -0.01]);
+        console.log(newPosArr);
+      }
+      console.log(state.currentIndex, "currentIndex");
       return {
         currentIndex: state?.currentIndex + 1,
         keyword: Users?.[state?.currentIndex + 1]?.["keyword"],
+        image: Users?.[state?.currentIndex + 1]?.image.imageUrl,
+        slug: Users?.[state?.currentIndex + 1]?.["slug"],
       };
     });
     position.setValue({ x: 0, y: 0 });
@@ -159,9 +209,16 @@ const Swipe = ({ navigation }) => {
   useEffect(() => {
     setIsLoading(true);
     fetchItemsFromEbay(positiveArr).then((items) => {
-      setUsers(items);
-      setState({ currentIndex: 0, keyword: items[0]["keyword"] });
+      setUsers((current) => items);
+      setCount((current) => current + 1);
       setIsLoading(false);
+      console.log(Users, "Users");
+      setState({
+        currentIndex: 0,
+        keyword: items[0]["keyword"],
+        image: items[0].image.imageUrl,
+        slug: items[0]["slug"],
+      });
     });
   }, []);
 
@@ -315,6 +372,9 @@ const Swipe = ({ navigation }) => {
       <View style={{ height: 60 }}></View>
       <View style={{ flex: 1 }}>{renderUsers()}</View>
       <View style={{ height: 60 }}></View>
+      <Button onPress={pressHandler} title="hello">
+        Hello
+      </Button>
     </View>
   );
 };
