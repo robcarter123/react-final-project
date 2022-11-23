@@ -312,91 +312,64 @@ const Swipe = ({ navigation }) => {
     return isLoading ? (
       <ActivityIndicator />
     ) : (
-      Users.map((item, i) => {
-        if (i < state.currentIndex) {
-          return null;
-        } else if (i == state.currentIndex) {
-          return (
+      Users.map((item, i) =>
+        i === state.currentIndex ? (
+          <Animated.View
+            {...panResponder.panHandlers}
+            key={item.id}
+            style={[
+              rotateAndTranslate,
+              {
+                height: SCREEN_HEIGHT - 120,
+                width: SCREEN_WIDTH,
+                padding: 10,
+                position: "absolute"
+              }
+            ]}
+          >
             <Animated.View
-              {...panResponder.panHandlers}
-              key={item.id}
-              style={[
-                rotateAndTranslate,
-                {
-                  height: SCREEN_HEIGHT - 120,
-                  width: SCREEN_WIDTH,
-                  padding: 10,
-                  position: "absolute"
-                }
-              ]}
+              style={{
+                opacity: likeOpacity,
+                transform: [{ rotate: "-30deg" }],
+                position: "absolute",
+                top: 50,
+                left: -100,
+                zIndex: 1000
+              }}
             >
-              <Animated.View
-                style={{
-                  opacity: likeOpacity,
-                  transform: [{ rotate: "-30deg" }],
-                  position: "absolute",
-                  top: 50,
-                  left: 40,
-                  zIndex: 1000
-                }}
-              >
-                <Text style={styles.textLike}>LIKE</Text>
-              </Animated.View>
-
-              <Animated.View
-                style={{
-                  opacity: dislikeOpacity,
-                  transform: [{ rotate: "30deg" }],
-                  position: "absolute",
-                  top: 50,
-                  right: 40,
-                  zIndex: 1000
-                }}
-              >
-                <Text style={styles.textDislike}>NOPE</Text>
-              </Animated.View>
-              <View style={styles.card}>
-                <Text
-                  style={styles.textTitle}
-                  onPress={() => Linking.openURL(item.itemWebUrl)}
-                >
-                  {`${item.title.substring(0, 30)}...`}
-                </Text>
-                <Text style={styles.textPrice}>£{item.price.value}</Text>
-                <Image
-                  style={styles.image}
-                  source={{
-                    uri: item.image.imageUrl
-                  }}
-                />
-              </View>
+              <Text style={styles.textLike}>LIKE</Text>
             </Animated.View>
-          );
-        } else {
-          return (
+
             <Animated.View
-              key={item.id}
-              style={[
-                {
-                  opacity: nextCardOpacity,
-                  transform: [{ scale: nextCardScale }],
-                  height: SCREEN_HEIGHT - 120,
-                  width: SCREEN_WIDTH,
-                  padding: 10,
-                  position: "absolute"
-                }
-              ]}
+              style={{
+                opacity: dislikeOpacity,
+                transform: [{ rotate: "30deg" }],
+                position: "absolute",
+                top: 50,
+                right: -120,
+                zIndex: 1000
+              }}
             >
+              <Text style={styles.textDislike}>NOPE</Text>
+            </Animated.View>
+            <View style={styles.card}>
+              <Text
+                style={styles.textTitle}
+                onPress={() => Linking.openURL(item.itemWebUrl)}
+              >
+                {`${item.title.substring(0, 30)}...`}
+              </Text>
+              <Text style={styles.textPrice}>£{item.price.value}</Text>
               <Image
                 style={styles.image}
                 source={{
                   uri: item.image.imageUrl
                 }}
               />
-            </Animated.View>
-          );
-        }
-      }).reverse()
+            </View>
+          </Animated.View>
+        ) : null
+      ).reverse()
     );
   };
 
@@ -461,7 +434,7 @@ const styles = StyleSheet.create({
   },
   submitBtn: {
     display: "flex",
-    width: "80%",
+    width: "70%",
     borderRadius: 25,
     height: 50,
     alignItems: "center",
