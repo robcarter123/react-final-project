@@ -44,4 +44,3 @@ export const fetchItemsFromEbay = (keywords) => {
     .catch((err) => console.log(err));
 };
 
-// module.exports = { postWordToModel, fetchItemsFromEbay };

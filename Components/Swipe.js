@@ -1,7 +1,7 @@
 import { NavigationContainer, StackActions } from "@react-navigation/native";
 import { createNativeStackNavigator } from "react-navigation-stack";
 import React, { useState, useEffect } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, ActivityIndicator } from "react-native";
 import {
   Text,
   View,
@@ -312,7 +312,7 @@ const Swipe = ({ navigation }) => {
 
   const renderUsers = () => {
     return isLoading ? (
-      <Text>hello</Text>
+      <ActivityIndicator/>
     ) : (
       Users.map((item, i) => {
         if (i < state.currentIndex) {
@@ -342,16 +342,7 @@ const Swipe = ({ navigation }) => {
                   zIndex: 1000,
                 }}
               >
-                <Text
-                  style={{
-                    borderWidth: 1,
-                    borderColor: "green",
-                    color: "green",
-                    fontSize: 32,
-                    fontWeight: "800",
-                    padding: 10,
-                  }}
-                >
+                <Text style={styles.textLike}>
                   LIKE
                 </Text>
               </Animated.View>
@@ -366,34 +357,20 @@ const Swipe = ({ navigation }) => {
                   zIndex: 1000,
                 }}
               >
-                <Text
-                  style={{
-                    borderWidth: 1,
-                    borderColor: "red",
-                    color: "red",
-                    fontSize: 32,
-                    fontWeight: "800",
-                    padding: 10,
-                  }}
-                >
+                <Text style={styles.textDislike}>
                   NOPE
                 </Text>
               </Animated.View>
+
               <Text
-                style={{ color: "blue" }}
+                style={styles.text}
                 onPress={() => Linking.openURL(item.itemWebUrl)}
               >
                 {item.title}
               </Text>
-              <Text>£{item.price.value}</Text>
+              <Text style={styles.text}>£{item.price.value}</Text>
               <Image
-                style={{
-                  flex: 1,
-                  height: null,
-                  width: null,
-                  resizeMode: "cover",
-                  borderRadius: 20,
-                }}
+                style={styles.image}
                 source={{
                   uri: item.image.imageUrl,
                 }}
@@ -416,13 +393,7 @@ const Swipe = ({ navigation }) => {
               ]}
             >
               <Image
-                style={{
-                  flex: 1,
-                  height: null,
-                  width: null,
-                  resizeMode: "cover",
-                  borderRadius: 20,
-                }}
+                style={styles.image}
                 source={{
                   uri: item.image.imageUrl,
                 }}
@@ -436,14 +407,62 @@ const Swipe = ({ navigation }) => {
 
   return (
     <View style={{ flex: 1 }}>
-      <View style={{ height: 60 }}></View>
-      <View style={{ flex: 1 }}>{renderUsers()}</View>
-      <View style={{ height: 60 }}></View>
-      <Button onPress={pressHandler} title="hello">
-        Hello
+      <View style={{ height: 0 }}></View>
+      <View style={styles.container}>{renderUsers()}</View>
+      <View style={{ height: 0 }}></View>
+      <Button onPress={pressHandler} title="confirm">
+        
       </Button>
     </View>
   );
 };
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 2,
+    backgroundColor: "#f7eab7",
+   
+    height: 0,
+  },
+
+
+  text:{
+    color: "black",
+    height: 10,
+    flex: 0.2,
+    padding: 0.1,
+    bold: {fontWeight: "bold"},
+    fontSize: 18,
+    fontWeight: '600'
+    },
+    textLike:{
+      borderWidth: 1,
+      borderColor: "green",
+      color: "green",
+      fontSize: 32,
+      fontWeight: "800",
+      padding: 10,
+
+    },
+    textDislike:{
+      
+        borderWidth: 1,
+        borderColor: "red",
+        color: "red",
+        fontSize: 32,
+        fontWeight: "800",
+        padding: 10,
+    },
+
+  image: {
+    flex: 1,
+    height: null,
+    width: null,
+    resizeMode: "contain",
+    borderRadius: 40,
+
+  }
+})
 
 export default Swipe;
