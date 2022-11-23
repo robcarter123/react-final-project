@@ -10,8 +10,8 @@ import {
   Animated,
   PanResponder,
   Linking,
+  TouchableOpacity
 } from "react-native";
-import { Button } from "react-native";
 import { fetchItemsFromEbay, postWordToModel } from "../api.js";
 
 const SCREEN_HEIGHT = Dimensions.get("window").height;
@@ -21,7 +21,7 @@ const Swipe = ({ navigation }) => {
   let likesArr = navigation.state.params.positiveCategories;
 
   const [positiveArr, setPositiveArr] = useState(
-    likesArr.map((word) => {
+    likesArr.map(word => {
       return [word, 0.02];
     })
   );
@@ -41,7 +41,7 @@ const Swipe = ({ navigation }) => {
     ["candy", 0.6533358693122864],
     ["jewelry", 0.6434913277626038],
     ["denim", 0.6392609477043152],
-    ["wig", 0.6287851929664612],
+    ["wig", 0.6287851929664612]
   ];
 
   const [count, setCount] = useState(0);
@@ -54,39 +54,38 @@ const Swipe = ({ navigation }) => {
       categories: [
         {
           categoryId: "46782",
-          categoryName: "Candles & Tea Lights",
+          categoryName: "Candles & Tea Lights"
         },
         {
           categoryId: "11700",
-          categoryName: "Home, Furniture & DIY",
+          categoryName: "Home, Furniture & DIY"
         },
         {
           categoryId: "262975",
-          categoryName: "Candles & Home Fragrance",
-        },
+          categoryName: "Candles & Home Fragrance"
+        }
       ],
       image: {
         imageUrl:
-          "https://i.ebayimg.com/thumbs/images/g/sQsAAOSwMThjE2nG/s-l225.jpg",
+          "https://i.ebayimg.com/thumbs/images/g/sQsAAOSwMThjE2nG/s-l225.jpg"
       },
       price: {
         value: "16.99",
-        currency: "GBP",
+        currency: "GBP"
       },
       thumbnailImage: [
         {
-          imageUrl:
-            "https://i.ebayimg.com/images/g/sQsAAOSwMThjE2nG/s-l500.jpg",
-        },
+          imageUrl: "https://i.ebayimg.com/images/g/sQsAAOSwMThjE2nG/s-l500.jpg"
+        }
       ],
       shippingOptions: [
         {
           shippingCostType: "FIXED",
           shippingCost: {
             value: "0.00",
-            currency: "GBP",
-          },
-        },
+            currency: "GBP"
+          }
+        }
       ],
       buyingOptions: ["FIXED_PRICE"],
       itemWebUrl:
@@ -94,32 +93,32 @@ const Swipe = ({ navigation }) => {
       additionalImages: [
         {
           imageUrl:
-            "https://origin-galleryplus.ebayimg.com/ws/web/155258419210_2_0_1/225x225.jpg",
+            "https://origin-galleryplus.ebayimg.com/ws/web/155258419210_2_0_1/225x225.jpg"
         },
         {
           imageUrl:
-            "https://origin-galleryplus.ebayimg.com/ws/web/155258419210_3_0_1/225x225.jpg",
+            "https://origin-galleryplus.ebayimg.com/ws/web/155258419210_3_0_1/225x225.jpg"
         },
         {
           imageUrl:
-            "https://origin-galleryplus.ebayimg.com/ws/web/155258419210_4_0_1/225x225.jpg",
+            "https://origin-galleryplus.ebayimg.com/ws/web/155258419210_4_0_1/225x225.jpg"
         },
         {
           imageUrl:
-            "https://origin-galleryplus.ebayimg.com/ws/web/155258419210_5_0_1/225x225.jpg",
+            "https://origin-galleryplus.ebayimg.com/ws/web/155258419210_5_0_1/225x225.jpg"
         },
         {
           imageUrl:
-            "https://origin-galleryplus.ebayimg.com/ws/web/155258419210_6_0_1/225x225.jpg",
+            "https://origin-galleryplus.ebayimg.com/ws/web/155258419210_6_0_1/225x225.jpg"
         },
         {
           imageUrl:
-            "https://origin-galleryplus.ebayimg.com/ws/web/155258419210_7_0_1/225x225.jpg",
-        },
+            "https://origin-galleryplus.ebayimg.com/ws/web/155258419210_7_0_1/225x225.jpg"
+        }
       ],
       adultOnly: false,
-      keyword: "candles+tea+lights",
-    },
+      keyword: "candles+tea+lights"
+    }
   ]);
   const [isLoading, setIsLoading] = useState(false);
   const positiveForm = [["candles", 0.5]];
@@ -130,22 +129,22 @@ const Swipe = ({ navigation }) => {
     position.x.interpolate({
       inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
       outputRange: ["-10deg", "0deg", "10deg"],
-      extrapolate: "clamp",
+      extrapolate: "clamp"
     })
   );
   const [rotateAndTranslate, setRotateAndTranslate] = useState({
     transform: [
       {
-        rotate: rotate,
+        rotate: rotate
       },
-      ...position.getTranslateTransform(),
-    ],
+      ...position.getTranslateTransform()
+    ]
   });
   const [likeOpacity, setLikeOpacity] = useState(
     position.x.interpolate({
       inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
       outputRange: [0, 0, 1],
-      extrapolate: "clamp",
+      extrapolate: "clamp"
     })
   );
   // useEffect(() => {
@@ -158,15 +157,15 @@ const Swipe = ({ navigation }) => {
 
   useEffect(() => {
     setIsLoading(true);
-    fetchItemsFromEbay(positiveArr).then((items) => {
-      setUsers((current) => [...current, ...items]);
-      setCount((current) => current + 1);
+    fetchItemsFromEbay(positiveArr).then(items => {
+      setUsers(current => [...current, ...items]);
+      setCount(current => current + 1);
       setIsLoading(false);
       setState({
         currentIndex: 0,
         keyword: items[0]["keyword"],
         image: items[0].image.imageUrl,
-        slug: items[0]["slug"],
+        slug: items[0]["slug"]
       });
     });
   }, []);
@@ -181,12 +180,11 @@ const Swipe = ({ navigation }) => {
     //   // setCount((current) => current + 1);
     // }
     if (count === 4) {
-     
       setIsLoading(true);
-      fetchItemsFromEbay(preferences).then((items) => {
-        setUsers((current) => {
+      fetchItemsFromEbay(preferences).then(items => {
+        setUsers(current => {
           const newArr = [...current];
-          setCount((current) => 1);
+          setCount(current => 1);
           return [...newArr, ...items];
         });
         setIsLoading(false);
@@ -196,19 +194,19 @@ const Swipe = ({ navigation }) => {
   const dislikeOpacity = position.x.interpolate({
     inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
     outputRange: [1, 0, 0],
-    extrapolate: "clamp",
+    extrapolate: "clamp"
   });
 
   const nextCardOpacity = position.x.interpolate({
     inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
     outputRange: [1, 0, 1],
-    extrapolate: "clamp",
+    extrapolate: "clamp"
   });
 
   const nextCardScale = position.x.interpolate({
     inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
     outputRange: [1, 0.8, 0],
-    extrapolate: "clamp",
+    extrapolate: "clamp"
   });
 
   const pressHandler = () => {
@@ -226,14 +224,14 @@ const Swipe = ({ navigation }) => {
       if (gestureState.dx > 120) {
         Animated.spring(position, {
           toValue: { x: SCREEN_WIDTH + 100, y: gestureState.dy },
-          useNativeDriver: true,
+          useNativeDriver: true
         }).start(() => {
           updateData();
         });
       } else if (gestureState.dx < -120) {
         Animated.spring(position, {
           toValue: { x: -SCREEN_WIDTH - 100, y: gestureState.dy },
-          useNativeDriver: true,
+          useNativeDriver: true
         }).start(() => {
           updateNegativeData();
         });
@@ -241,18 +239,18 @@ const Swipe = ({ navigation }) => {
         Animated.spring(position, {
           toValue: { x: 0, y: 0 },
           friction: 4,
-          useNativeDriver: true,
+          useNativeDriver: true
         }).start();
       }
-    },
+    }
   });
 
   const updateData = () => {
     console.log(state);
-    setModelCount((current) => current + 1);
+    setModelCount(current => current + 1);
     console.log(Users, "<<<<<USers");
-    setCount((current) => current + 1);
-    setState((state) => {
+    setCount(current => current + 1);
+    setState(state => {
       //trying optional chaining to avoid error when cards gone
       // let count = 1;
       for (let i = 0; i < positiveArr.length; i++) {
@@ -268,15 +266,15 @@ const Swipe = ({ navigation }) => {
         positiveArr.push([state["keyword"], 0.02]);
         console.log(positiveArr);
       }
-      setHistoryState((current) => [
+      setHistoryState(current => [
         ...current,
-        { keyword: state.keyword, image: state.image, slug: state.slug },
+        { keyword: state.keyword, image: state.image, slug: state.slug }
       ]);
       return {
         currentIndex: state?.currentIndex + 1,
         keyword: Users?.[state?.currentIndex + 1]?.["keyword"],
         image: Users?.[state?.currentIndex + 1]?.image.imageUrl,
-        slug: Users?.[state?.currentIndex + 1]?.["slug"],
+        slug: Users?.[state?.currentIndex + 1]?.["slug"]
       };
     });
     position.setValue({ x: 0, y: 0 });
@@ -286,7 +284,7 @@ const Swipe = ({ navigation }) => {
   const updateNegativeData = () => {
     console.log(modelCount, "modelcount in updatedata");
 
-    setState((state) => {
+    setState(state => {
       let count = 1;
       for (let i = 0; i < positiveArr.length; i++) {
         if (positiveArr[i][0] === state["keyword"]) {
@@ -303,7 +301,7 @@ const Swipe = ({ navigation }) => {
         currentIndex: state?.currentIndex + 1,
         keyword: Users?.[state?.currentIndex + 1]?.["keyword"],
         image: Users?.[state?.currentIndex + 1]?.image.imageUrl,
-        slug: Users?.[state?.currentIndex + 1]?.["slug"],
+        slug: Users?.[state?.currentIndex + 1]?.["slug"]
       };
     });
     position.setValue({ x: 0, y: 0 });
@@ -312,7 +310,7 @@ const Swipe = ({ navigation }) => {
 
   const renderUsers = () => {
     return isLoading ? (
-      <ActivityIndicator/>
+      <ActivityIndicator />
     ) : (
       Users.map((item, i) => {
         if (i < state.currentIndex) {
@@ -328,8 +326,8 @@ const Swipe = ({ navigation }) => {
                   height: SCREEN_HEIGHT - 120,
                   width: SCREEN_WIDTH,
                   padding: 10,
-                  position: "absolute",
-                },
+                  position: "absolute"
+                }
               ]}
             >
               <Animated.View
@@ -339,12 +337,10 @@ const Swipe = ({ navigation }) => {
                   position: "absolute",
                   top: 50,
                   left: 40,
-                  zIndex: 1000,
+                  zIndex: 1000
                 }}
               >
-                <Text style={styles.textLike}>
-                  LIKE
-                </Text>
+                <Text style={styles.textLike}>LIKE</Text>
               </Animated.View>
 
               <Animated.View
@@ -354,27 +350,26 @@ const Swipe = ({ navigation }) => {
                   position: "absolute",
                   top: 50,
                   right: 40,
-                  zIndex: 1000,
+                  zIndex: 1000
                 }}
               >
-                <Text style={styles.textDislike}>
-                  NOPE
-                </Text>
+                <Text style={styles.textDislike}>NOPE</Text>
               </Animated.View>
-
-              <Text
-                style={styles.textTitle}
-                onPress={() => Linking.openURL(item.itemWebUrl)}
-              >
-                {item.title}
-              </Text>
-              <Text style={styles.textPrice}>£{item.price.value}</Text>
-              <Image
-                style={styles.image}
-                source={{
-                  uri: item.image.imageUrl,
-                }}
-              />
+              <View style={styles.card}>
+                <Text
+                  style={styles.textTitle}
+                  onPress={() => Linking.openURL(item.itemWebUrl)}
+                >
+                  {`${item.title.substring(0, 30)}...`}
+                </Text>
+                <Text style={styles.textPrice}>£{item.price.value}</Text>
+                <Image
+                  style={styles.image}
+                  source={{
+                    uri: item.image.imageUrl
+                  }}
+                />
+              </View>
             </Animated.View>
           );
         } else {
@@ -388,14 +383,14 @@ const Swipe = ({ navigation }) => {
                   height: SCREEN_HEIGHT - 120,
                   width: SCREEN_WIDTH,
                   padding: 10,
-                  position: "absolute",
-                },
+                  position: "absolute"
+                }
               ]}
             >
               <Image
                 style={styles.image}
                 source={{
-                  uri: item.image.imageUrl,
+                  uri: item.image.imageUrl
                 }}
               />
             </Animated.View>
@@ -406,93 +401,75 @@ const Swipe = ({ navigation }) => {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ backgroundColor: "#fff", flex: 1 }}>
       <View style={{ height: 0 }}></View>
       <View style={styles.container}>{renderUsers()}</View>
       <View style={{ height: 0 }}></View>
-      <Button onPress={pressHandler} title="confirm">
-        
-      </Button>
+      <TouchableOpacity style={styles.submitBtn} onPress={pressHandler}>
+        <Text style={styles.submitText}>Next</Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
-
 const styles = StyleSheet.create({
   container: {
-    flex: 2,
-    backgroundColor: "#1E792C",
-    justifyContent: "center",
-    alignItems: "center",
-   
-    height: 0,
-  },
-
-
-  textTitle:{
-    color: "black",
-    height: 10,
-    flex: 0.2,
-    bold: {fontWeight: "bold"},
-    fontSize: 20,
-    marginLeft: 50,
-    marginRight: 50,
-    fontWeight: '600',
-    //justifyContent: "center",
-    alignItems: "center",
-    borderColor: "black",
-    textShadowColor:'#585858',
-    borderWidth: 1,
-    backgroundColor: 'whitesmoke',
-    opacity: 60,
-    borderRadius: 4,
-    borderWidth: 0.5,
-    borderColor: '#000',
-    padding: 10,
-    margin: 20,
-    marginBottom: 0,
-},
-    textPrice:{
-      color: "black",
-      height: 10,
-      flex: 0.2,
-      padding: 0.1,
-      bold: {fontWeight: "bold"},
-      fontSize: 20,
-      marginLeft: 0,
-      marginRight: 50,
-      fontWeight: '600',
-      justifyContent: "center",
-      alignItems: "center",
-    },
-
-    textLike:{
-      borderWidth: 1,
-      borderColor: "green",
-      color: "green",
-      fontSize: 32,
-      fontWeight: "800",
-      padding: 10,
-
-    },
-    textDislike:{
-      
-        borderWidth: 1,
-        borderColor: "red",
-        color: "red",
-        fontSize: 32,
-        fontWeight: "800",
-        padding: 10,
-    },
-
-  image: {
     flex: 1,
-    height: null,
-    width: null,
-    resizeMode: "contain",
-    borderRadius: 40,
-
+    backgroundColor: "#fff",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  card: {
+    display: "flex",
+    flex: 1,
+    backgroundColor: "#F7EAB7",
+    borderRadius: 10
+  },
+  textTitle: {
+    fontSize: 20,
+    fontWeight: "600",
+    alignItems: "center",
+    margin: 20
+  },
+  textPrice: {
+    fontSize: 20,
+    fontWeight: "600",
+    alignItems: "center",
+    marginHorizontal: 20
+  },
+  image: {
+    alignSelf: "center",
+    marginVertical: 20,
+    height: "66%",
+    width: "66%"
+  },
+  textLike: {
+    borderWidth: 1,
+    borderColor: "green",
+    color: "green",
+    fontSize: 32,
+    fontWeight: "800",
+    padding: 10
+  },
+  textDislike: {
+    borderWidth: 1,
+    borderColor: "red",
+    color: "red",
+    fontSize: 32,
+    fontWeight: "800",
+    padding: 10
+  },
+  submitBtn: {
+    display: "flex",
+    width: "80%",
+    borderRadius: 25,
+    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    alignSelf: "center",
+    marginVertical: 5,
+    backgroundColor: "#1E792C"
   }
-})
+});
 
 export default Swipe;

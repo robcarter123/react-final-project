@@ -80,10 +80,17 @@ const PositiveCollectForm = ({ navigation }) => {
         ))}
       </View>
       <TouchableOpacity style={styles.submitBtn} onPress={pressHandler}>
-        <Text style={styles.submitText}>Next</Text>
+        <Text>Next</Text>
       </TouchableOpacity>
-      <Text style={{ color: "red", opacity: warningOpacity }}>
-        Please select 3 options to get started
+      <Text
+        style={{
+          marginVertical: 5,
+          alignSelf: "center",
+          color: "red",
+          opacity: warningOpacity
+        }}
+      >
+        Please select 1 option to get started
       </Text>
     </KeyboardAvoidingView>
   );
