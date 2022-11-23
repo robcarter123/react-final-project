@@ -21,6 +21,7 @@ export const postWordToModel = (pos, neg) => {
 // postModeledWord(positive, negative);
 
 export const fetchItemsFromEbay = (keywords) => {
+  console.log(keywords, "<<< api keywords");
   const searchQuery = keywords
     .slice(0, 4)
     .map((nestedArray) => {

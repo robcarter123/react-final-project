@@ -172,7 +172,8 @@ const Swipe = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    console.log("in useEffect"); // console.log(count);
+    console.log("in useEffect");
+    console.log(modelCount, "modelcount in useffect");
     // if (count === 0) {
     //   console.log("in if block", count);
 
@@ -180,6 +181,7 @@ const Swipe = ({ navigation }) => {
     //   // setCount((current) => current + 1);
     // }
     if (count === 4) {
+      console.log("inside if block!!!!!!!!!!!!!!!");
       setIsLoading(true);
       fetchItemsFromEbay(preferences).then((items) => {
         setUsers((current) => {
@@ -191,81 +193,74 @@ const Swipe = ({ navigation }) => {
       });
     }
   }, [count]);
-  const [dislikeOpacity, setdislikeOpacity] = useState(
-    position.x.interpolate({
-      inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
-      outputRange: [1, 0, 0],
-      extrapolate: "clamp",
-    })
-  );
-  const [nextCardOpacity, setNextCardOpacity] = useState(
-    position.x.interpolate({
-      inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
-      outputRange: [1, 0, 1],
-      extrapolate: "clamp",
-    })
-  );
-  const [nextCardScale, setNextCardScale] = useState(
-    position.x.interpolate({
-      inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
-      outputRange: [1, 0.8, 0],
-      extrapolate: "clamp",
-    })
-  );
+  const dislikeOpacity = position.x.interpolate({
+    inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
+    outputRange: [1, 0, 0],
+    extrapolate: "clamp",
+  });
+
+  const nextCardOpacity = position.x.interpolate({
+    inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
+    outputRange: [1, 0, 1],
+    extrapolate: "clamp",
+  });
+
+  const nextCardScale = position.x.interpolate({
+    inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
+    outputRange: [1, 0.8, 0],
+    extrapolate: "clamp",
+  });
 
   const pressHandler = () => {
     navigation.navigate("History", { historyState });
   };
 
-  const [panResponder, setPanResponder] = useState(
-    PanResponder.create({
-      onStartShouldSetPanResponder: (evt, gestureState) => true,
-      onPanResponderMove: (evt, gestureState) => {
-        position.setValue({ x: gestureState.dx, y: gestureState.dy });
-        setPosition(position);
-      },
-      onPanResponderRelease: (evt, gestureState) => {
-        //Potential for logical coding
-        if (gestureState.dx > 120) {
-          Animated.spring(position, {
-            toValue: { x: SCREEN_WIDTH + 100, y: gestureState.dy },
-            useNativeDriver: true,
-          }).start(() => {
-            updateData();
-          });
-        } else if (gestureState.dx < -120) {
-          Animated.spring(position, {
-            toValue: { x: -SCREEN_WIDTH - 100, y: gestureState.dy },
-            useNativeDriver: true,
-          }).start(() => {
-            updateNegativeData();
-          });
-        } else {
-          Animated.spring(position, {
-            toValue: { x: 0, y: 0 },
-            friction: 4,
-            useNativeDriver: true,
-          }).start();
-        }
-      },
-    })
-  );
+  const panResponder = PanResponder.create({
+    onStartShouldSetPanResponder: (evt, gestureState) => true,
+    onPanResponderMove: (evt, gestureState) => {
+      position.setValue({ x: gestureState.dx, y: gestureState.dy });
+      setPosition(position);
+    },
+    onPanResponderRelease: (evt, gestureState) => {
+      //Potential for logical coding
+      if (gestureState.dx > 120) {
+        Animated.spring(position, {
+          toValue: { x: SCREEN_WIDTH + 100, y: gestureState.dy },
+          useNativeDriver: true,
+        }).start(() => {
+          updateData();
+        });
+      } else if (gestureState.dx < -120) {
+        Animated.spring(position, {
+          toValue: { x: -SCREEN_WIDTH - 100, y: gestureState.dy },
+          useNativeDriver: true,
+        }).start(() => {
+          updateNegativeData();
+        });
+      } else {
+        Animated.spring(position, {
+          toValue: { x: 0, y: 0 },
+          friction: 4,
+          useNativeDriver: true,
+        }).start();
+      }
+    },
+  });
 
   const updateData = () => {
-    console.log(count);
     console.log(state);
     setModelCount((current) => current + 1);
     console.log(Users, "<<<<<USers");
     setCount((current) => current + 1);
     setState((state) => {
       //trying optional chaining to avoid error when cards gone
-      let count = 1;
+      // let count = 1;
       for (let i = 0; i < positiveArr.length; i++) {
         if (positiveArr[i][0] === state["keyword"]) {
           positiveArr[i][1] = positiveArr[i][1] + 0.02;
           break;
         } else {
-          count++;
+          // count++;
         }
       }
       if (count === positiveArr.length + 1) {
@@ -289,6 +284,8 @@ const Swipe = ({ navigation }) => {
   };
 
   const updateNegativeData = () => {
+    console.log(modelCount, "modelcount in updatedata");
+
     setState((state) => {
       let count = 1;
       for (let i = 0; i < positiveArr.length; i++) {
@@ -296,7 +293,7 @@ const Swipe = ({ navigation }) => {
           positiveArr[i][1] = positiveArr[i][1] - 0.01;
           break;
         } else {
-          count++;
+          // count++;
         }
       }
       if (count === positiveArr.length + 1) {
