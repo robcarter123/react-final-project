@@ -22,105 +22,30 @@ const Swipe = ({ navigation }) => {
 
   const [positiveArr, setPositiveArr] = useState(
     likesArr.map((word) => {
-      return [word, 0.02];
+      return [word, 0.5];
     })
   );
+  // [
+  //   ["doll", 0.7578607797622681],
+  //   ["shoe", 0.7505601048469543],
+  //   ["dolls", 0.7128548622131348],
+  //   ["handbag", 0.6836262941360474],
+  //   ["boots", 0.6653067469596863],
+  //   ["shoes", 0.6612709760665894],
+  //   ["candy", 0.6533358693122864],
+  //   ["jewelry", 0.6434913277626038],
+  //   ["denim", 0.6392609477043152],
+  //   ["wig", 0.6287851929664612],
+  //   ["test", 0.9],
+  // ]
 
   const [historyState, setHistoryState] = useState([]);
-  console.log(historyState, "historyState");
 
   const [state, setState] = useState({});
 
-  const preferences = [
-    ["doll", 0.7578607797622681],
-    ["shoe", 0.7505601048469543],
-    ["dolls", 0.7128548622131348],
-    ["handbag", 0.6836262941360474],
-    ["boots", 0.6653067469596863],
-    ["shoes", 0.6612709760665894],
-    ["candy", 0.6533358693122864],
-    ["jewelry", 0.6434913277626038],
-    ["denim", 0.6392609477043152],
-    ["wig", 0.6287851929664612],
-  ];
-
   const [count, setCount] = useState(0);
   const [modelCount, setModelCount] = useState(0);
-  const [Users, setUsers] = useState([
-    {
-      itemId: "v1|155258419210|0",
-      title:
-        "Yankee Candle Gift Set (5 Piece) - Birthdays|Anniversary's|Christmas|Mothers Day",
-      categories: [
-        {
-          categoryId: "46782",
-          categoryName: "Candles & Tea Lights",
-        },
-        {
-          categoryId: "11700",
-          categoryName: "Home, Furniture & DIY",
-        },
-        {
-          categoryId: "262975",
-          categoryName: "Candles & Home Fragrance",
-        },
-      ],
-      image: {
-        imageUrl:
-          "https://i.ebayimg.com/thumbs/images/g/sQsAAOSwMThjE2nG/s-l225.jpg",
-      },
-      price: {
-        value: "16.99",
-        currency: "GBP",
-      },
-      thumbnailImage: [
-        {
-          imageUrl:
-            "https://i.ebayimg.com/images/g/sQsAAOSwMThjE2nG/s-l500.jpg",
-        },
-      ],
-      shippingOptions: [
-        {
-          shippingCostType: "FIXED",
-          shippingCost: {
-            value: "0.00",
-            currency: "GBP",
-          },
-        },
-      ],
-      buyingOptions: ["FIXED_PRICE"],
-      itemWebUrl:
-        "https://www.ebay.co.uk/itm/155258419210?hash=item24261f780a:g:sQsAAOSwMThjE2nG&amdata=enc%3AAQAHAAAA8H0A9hsnnX3dkJA%2BRZPcb6X%2FpnTaLQ3ZTSxBctJt3IPevNrNtt1fU%2FVoh52DvroLJyuPK6Lyh7%2F9FW6fqL1L6YMaAfkoP9jPdBVtHHNDaYMXzZtfGzvViMCSs54si81GLmElMyd%2BK6VglDoAmdrcRfTtnNSaAhJulqjVVAhk%2F79dC03EdHjzGSHwIqLGaXJtWpbqRrO5R1mRvRvZ%2BQ%2BkuZdlLpy%2FyU8eMyj8FFOVzUsS84gQIvECjKW1LaAEcupod7dYASCYi5hP12CVOgaZWjrIZPja1qDgeadKPq2EsxbeDm%2F4TGsHy57vHVNBU8sf%2Bg%3D%3D",
-      additionalImages: [
-        {
-          imageUrl:
-            "https://origin-galleryplus.ebayimg.com/ws/web/155258419210_2_0_1/225x225.jpg",
-        },
-        {
-          imageUrl:
-            "https://origin-galleryplus.ebayimg.com/ws/web/155258419210_3_0_1/225x225.jpg",
-        },
-        {
-          imageUrl:
-            "https://origin-galleryplus.ebayimg.com/ws/web/155258419210_4_0_1/225x225.jpg",
-        },
-        {
-          imageUrl:
-            "https://origin-galleryplus.ebayimg.com/ws/web/155258419210_5_0_1/225x225.jpg",
-        },
-        {
-          imageUrl:
-            "https://origin-galleryplus.ebayimg.com/ws/web/155258419210_6_0_1/225x225.jpg",
-        },
-        {
-          imageUrl:
-            "https://origin-galleryplus.ebayimg.com/ws/web/155258419210_7_0_1/225x225.jpg",
-        },
-      ],
-      adultOnly: false,
-      keyword: "candles+tea+lights",
-    },
-  ]);
+  const [Users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const positiveForm = [["candles", 0.5]];
   let negativeArr = navigation.state.params.negativeCategories;
@@ -148,13 +73,25 @@ const Swipe = ({ navigation }) => {
       extrapolate: "clamp",
     })
   );
-  // useEffect(() => {
-  //   if (modelCount === 3) {
-  //     postWordToModel(likesArr, negativeArr).then((data) => {
-  //       likesArr.push(...data.keywords);
-  //     });
-  //   }
-  // }, [modelCount]);
+  useEffect(() => {
+    if (modelCount === 3) {
+      postWordToModel(positiveArr).then(({ keywords: [one, two] }) => {
+        setPositiveArr((current) => {
+          let newArr = [...current];
+          for (let i = 0; i < newArr.length; i++) {
+            console.log(two);
+            if (newArr[i][1] < two[1]) {
+              newArr.splice(i, 0, two);
+              break;
+            }
+          }
+          return newArr;
+        });
+
+        setModelCount(0);
+      });
+    }
+  }, [modelCount]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -172,8 +109,6 @@ const Swipe = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    console.log("in useEffect");
-    console.log(modelCount, "modelcount in useffect");
     // if (count === 0) {
     //   console.log("in if block", count);
 
@@ -181,9 +116,8 @@ const Swipe = ({ navigation }) => {
     //   // setCount((current) => current + 1);
     // }
     if (count === 4) {
-      console.log("inside if block!!!!!!!!!!!!!!!");
       setIsLoading(true);
-      fetchItemsFromEbay(preferences).then((items) => {
+      fetchItemsFromEbay(positiveArr).then((items) => {
         setUsers((current) => {
           const newArr = [...current];
           setCount((current) => 1);
@@ -247,26 +181,58 @@ const Swipe = ({ navigation }) => {
     },
   });
 
+  const checkIfGreaterOrLessThan = (i, arr) => {
+    let start = false;
+    let end = false;
+    if (i === 0) start = true;
+    if (i === arr.length - 1) end = true;
+    console.log(arr);
+
+    if (!start && arr[i][1] > arr[i - 1][1]) {
+      setPositiveArr((current) => {
+        const newArr = [...current];
+        newArr[i] = newArr.splice(i - 1, 1, newArr[i]).flat();
+        if (!checkIfGreaterOrLessThan(i - 1, newArr)) return newArr;
+      });
+    } else if (!end && arr[i][1] < arr[i + 1][1]) {
+      setPositiveArr((current) => {
+        const newArr = [...current];
+        console.log(newArr[i]);
+        newArr[i] = newArr.splice(i + 1, 1, newArr[i]).flat();
+        if (!checkIfGreaterOrLessThan(i + 1, newArr)) return newArr;
+      });
+    } else return false;
+  };
+
   const updateData = () => {
-    console.log(state);
+    console.log(positiveArr);
     setModelCount((current) => current + 1);
-    console.log(Users, "<<<<<USers");
     setCount((current) => current + 1);
     setState((state) => {
       //trying optional chaining to avoid error when cards gone
-      // let count = 1;
+      let count = 1;
       for (let i = 0; i < positiveArr.length; i++) {
         if (positiveArr[i][0] === state["keyword"]) {
-          positiveArr[i][1] = positiveArr[i][1] + 0.02;
+          positiveArr[i][1] = positiveArr[i][1] + 0.1;
+          checkIfGreaterOrLessThan(i, positiveArr);
           break;
         } else {
-          // count++;
+          count++;
         }
       }
       if (count === positiveArr.length + 1) {
-        console.log(state, "<<<<<<<<<<<<<<");
-        positiveArr.push([state["keyword"], 0.02]);
-        console.log(positiveArr);
+        setPositiveArr((current) => {
+          let newArr = [...current];
+          for (let i = 0; i < newArr.length; i++) {
+            if (newArr[i][1] > 0.2) {
+              newArr.splice(i + 1, 0, [state["keyword"], 0.2]);
+              break;
+            }
+          }
+          console.log(newArr);
+          return newArr;
+        });
+        // checkIfGreaterOrLessThan(0, [[state.keyword, 0.2], ...positiveArr]);
       }
       setHistoryState((current) => [
         ...current,
@@ -284,21 +250,32 @@ const Swipe = ({ navigation }) => {
   };
 
   const updateNegativeData = () => {
-    console.log(modelCount, "modelcount in updatedata");
+    setModelCount((current) => current + 1);
 
-    setState((state) => {
-      let count = 1;
-      for (let i = 0; i < positiveArr.length; i++) {
-        if (positiveArr[i][0] === state["keyword"]) {
-          positiveArr[i][1] = positiveArr[i][1] - 0.01;
-          break;
-        } else {
-          // count++;
+    let count = 1;
+    for (let i = 0; i < positiveArr.length; i++) {
+      if (positiveArr[i][0] === state["keyword"]) {
+        positiveArr[i][1] = positiveArr[i][1] - 0.1;
+        checkIfGreaterOrLessThan(i, positiveArr);
+        break;
+      } else {
+        count++;
+      }
+    }
+    if (count === positiveArr.length + 1) {
+      setPositiveArr((current) => {
+        let newArr = [...current];
+        for (let i = 0; i < newArr.length; i++) {
+          if (newArr[i][1] > -0.2) {
+            newArr.splice(i, 0, [state["keyword"], -0.2]);
+            break;
+          }
         }
-      }
-      if (count === positiveArr.length + 1) {
-        positiveArr.push([state["keyword"], -0.01]);
-      }
+        console.log(newArr);
+        return newArr;
+      });
+    }
+    setState((state) => {
       return {
         currentIndex: state?.currentIndex + 1,
         keyword: Users?.[state?.currentIndex + 1]?.["keyword"],
@@ -312,7 +289,7 @@ const Swipe = ({ navigation }) => {
 
   const renderUsers = () => {
     return isLoading ? (
-      <ActivityIndicator/>
+      <ActivityIndicator />
     ) : (
       Users.map((item, i) => {
         if (i < state.currentIndex) {
@@ -342,9 +319,7 @@ const Swipe = ({ navigation }) => {
                   zIndex: 1000,
                 }}
               >
-                <Text style={styles.textLike}>
-                  LIKE
-                </Text>
+                <Text style={styles.textLike}>LIKE</Text>
               </Animated.View>
 
               <Animated.View
@@ -357,9 +332,7 @@ const Swipe = ({ navigation }) => {
                   zIndex: 1000,
                 }}
               >
-                <Text style={styles.textDislike}>
-                  NOPE
-                </Text>
+                <Text style={styles.textDislike}>NOPE</Text>
               </Animated.View>
 
               <Text
@@ -410,50 +383,44 @@ const Swipe = ({ navigation }) => {
       <View style={{ height: 0 }}></View>
       <View style={styles.container}>{renderUsers()}</View>
       <View style={{ height: 0 }}></View>
-      <Button onPress={pressHandler} title="confirm">
-        
-      </Button>
+      <Button onPress={pressHandler} title="confirm"></Button>
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {
     flex: 2,
     backgroundColor: "#f7eab7",
-   
+
     height: 0,
   },
 
-
-  text:{
+  text: {
     color: "black",
     height: 10,
     flex: 0.2,
     padding: 0.1,
-    bold: {fontWeight: "bold"},
+    bold: { fontWeight: "bold" },
     fontSize: 18,
-    fontWeight: '600'
-    },
-    textLike:{
-      borderWidth: 1,
-      borderColor: "green",
-      color: "green",
-      fontSize: 32,
-      fontWeight: "800",
-      padding: 10,
-
-    },
-    textDislike:{
-      
-        borderWidth: 1,
-        borderColor: "red",
-        color: "red",
-        fontSize: 32,
-        fontWeight: "800",
-        padding: 10,
-    },
+    fontWeight: "600",
+  },
+  textLike: {
+    borderWidth: 1,
+    borderColor: "green",
+    color: "green",
+    fontSize: 32,
+    fontWeight: "800",
+    padding: 10,
+  },
+  textDislike: {
+    borderWidth: 1,
+    borderColor: "red",
+    color: "red",
+    fontSize: 32,
+    fontWeight: "800",
+    padding: 10,
+  },
 
   image: {
     flex: 1,
@@ -461,8 +428,7 @@ const styles = StyleSheet.create({
     width: null,
     resizeMode: "contain",
     borderRadius: 40,
-
-  }
-})
+  },
+});
 
 export default Swipe;

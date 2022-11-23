@@ -47,7 +47,7 @@ const WelcomePage = ({ navigation }) => {
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <KeyboardAvoidingView
         style={styles.container}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        // behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
         <Image style={styles.image} source={require("./logo-square.png")} />
 
