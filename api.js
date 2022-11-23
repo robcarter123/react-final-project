@@ -8,7 +8,7 @@ export const postWordToModel = (pos, neg) => {
   console.log(positive);
   console.log(negative);
   return axios
-    .post("http://127.0.0.1:5000/model", {
+    .post("https://slh-keyword-api.herokuapp.com/model", {
       positive,
       negative,
     })
@@ -34,9 +34,8 @@ export const fetchItemsFromEbay = (keywords) => {
     .then(({ data: { items } }) => {
       const itemsToReturn = items.map((item) => {
         item.keyword = item.categories[0].categoryName
-          .replaceAll(/[^a-zA-Z\s]+/g, "")
-          .replaceAll(" ", "+")
-          .replaceAll("++", "+");
+          .replace(/[^a-zA-Z\s]+/g, "")
+          .replace(/\s+/g, "+");
         return item;
       });
       return itemsToReturn;
