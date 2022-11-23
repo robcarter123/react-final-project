@@ -181,7 +181,7 @@ const Swipe = ({ navigation }) => {
     //   // setCount((current) => current + 1);
     // }
     if (count === 4) {
-      console.log("inside if block!!!!!!!!!!!!!!!");
+     
       setIsLoading(true);
       fetchItemsFromEbay(preferences).then((items) => {
         setUsers((current) => {
@@ -363,12 +363,12 @@ const Swipe = ({ navigation }) => {
               </Animated.View>
 
               <Text
-                style={styles.text}
+                style={styles.textTitle}
                 onPress={() => Linking.openURL(item.itemWebUrl)}
               >
                 {item.title}
               </Text>
-              <Text style={styles.text}>£{item.price.value}</Text>
+              <Text style={styles.textPrice}>£{item.price.value}</Text>
               <Image
                 style={styles.image}
                 source={{
@@ -421,21 +421,51 @@ const Swipe = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 2,
-    backgroundColor: "#f7eab7",
+    backgroundColor: "#EEC666",
+    justifyContent: "center",
+    alignItems: "center",
    
     height: 0,
   },
 
 
-  text:{
+  textTitle:{
     color: "black",
     height: 10,
     flex: 0.2,
-    padding: 0.1,
     bold: {fontWeight: "bold"},
-    fontSize: 18,
-    fontWeight: '600'
+    fontSize: 20,
+    marginLeft: 50,
+    marginRight: 50,
+    fontWeight: '600',
+    //justifyContent: "center",
+    alignItems: "center",
+    borderColor: "black",
+    textShadowColor:'#585858',
+    borderWidth: 1,
+    backgroundColor: 'whitesmoke',
+    opacity: 60,
+    borderRadius: 4,
+    borderWidth: 0.5,
+    borderColor: '#000',
+    padding: 10,
+    margin: 20,
+    marginBottom: 0,
+},
+    textPrice:{
+      color: "black",
+      height: 10,
+      flex: 0.2,
+      padding: 0.1,
+      bold: {fontWeight: "bold"},
+      fontSize: 20,
+      marginLeft: 0,
+      marginRight: 50,
+      fontWeight: '600',
+      justifyContent: "center",
+      alignItems: "center",
     },
+
     textLike:{
       borderWidth: 1,
       borderColor: "green",
