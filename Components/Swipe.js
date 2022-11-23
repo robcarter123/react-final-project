@@ -421,7 +421,7 @@ const Swipe = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 2,
-    backgroundColor: "#EEC666",
+    backgroundColor: "#1E792C",
     justifyContent: "center",
     alignItems: "center",
    
