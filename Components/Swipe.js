@@ -12,7 +12,7 @@ import {
   Linking,
 } from "react-native";
 import { Button } from "react-native-web";
-import { fetchItemsFromEbay } from "../api.js";
+import { fetchItemsFromEbay, postWordToModel } from "../api.js";
 
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 const SCREEN_WIDTH = Dimensions.get("window").width;
@@ -43,10 +43,8 @@ const preferences = [
 ];
 
   const [count, setCount] = useState(0);
-
-  const [Users, setUsers] = useState([
-  ]);
-
+  const [modelCount, setModelCount] = useState(0);
+  const [Users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const positiveForm = [["candles", 0.5]];
   let negativeArr = navigation.state.params.negativeCategories;
@@ -136,6 +134,7 @@ const preferences = [
 
   const updateData = () => {
     setCount((current) => current + 1);
+    setModelCount((current) => current + 1);
     setState((state) => {
       //trying optional chaining to avoid error when cards gone
       let count = 1;
@@ -194,9 +193,16 @@ const preferences = [
   };
 
   useEffect(() => {
-    if (count === 0) {
-      console.log(positiveArr);
-      setIsLoading(true);
+    if (modelCount === 3) {
+      postWordToModel(positiveArr, negativeArr).then((data) => {
+        positiveArr.push(...data.keywords);
+        console.log(positiveArr);
+      });
+    }
+  }, [modelCount]);
+
+  useEffect(() => {
+     setIsLoading(true);
       fetchItemsFromEbay(positiveArr).then((items) => {
         setUsers((current) => items);
         setCount((current) => current + 1);
@@ -206,8 +212,17 @@ const preferences = [
           keyword: items[0]["keyword"],
           image: items[0].image.imageUrl,
           slug: items[0]['slug'] });
-      });
-    }
+    });
+  }, []);
+
+  useEffect(() => {
+    // console.log(count);
+    // if (count === 0) {
+    //   console.log("in if block", count);
+
+    //   console.log(Users, "users");
+    //   // setCount((current) => current + 1);
+    // }
     if (count === 4) {
       setIsLoading(true);
       fetchItemsFromEbay(preferences).then((items) => {
@@ -219,122 +234,130 @@ const preferences = [
         setIsLoading(false);
       });
     }
-  });
+  }, [count]);
 
   const renderUsers = () => {
-    return Users.map((item, i) => {
-      if (i < state.currentIndex) {
-        return null;
-      } else if (i == state.currentIndex) {
-        return (
-          <Animated.View
-            {...panResponder.panHandlers}
-            key={item.id}
-            style={[
-              rotateAndTranslate,
-              {
-                height: SCREEN_HEIGHT - 120,
-                width: SCREEN_WIDTH,
-                padding: 10,
-                position: "absolute",
-              },
-            ]}
-          >
+    return isLoading ? (
+      <Text>hello</Text>
+    ) : (
+      Users.map((item, i) => {
+        if (i < state.currentIndex) {
+          return null;
+        } else if (i == state.currentIndex) {
+          return (
             <Animated.View
-              style={{
-                opacity: likeOpacity,
-                transform: [{ rotate: "-30deg" }],
-                position: "absolute",
-                top: 50,
-                left: 40,
-                zIndex: 1000,
-              }}
-            >
-              <Text
-                style={{
-                  borderWidth: 1,
-                  borderColor: "green",
-                  color: "green",
-                  fontSize: 32,
-                  fontWeight: "800",
+              {...panResponder.panHandlers}
+              key={item.id}
+              style={[
+                rotateAndTranslate,
+                {
+                  height: SCREEN_HEIGHT - 120,
+                  width: SCREEN_WIDTH,
                   padding: 10,
+                  position: "absolute",
+                },
+              ]}
+            >
+              <Animated.View
+                style={{
+                  opacity: likeOpacity,
+                  transform: [{ rotate: "-30deg" }],
+                  position: "absolute",
+                  top: 50,
+                  left: 40,
+                  zIndex: 1000,
                 }}
               >
-                LIKE
-              </Text>
-            </Animated.View>
+                <Text
+                  style={{
+                    borderWidth: 1,
+                    borderColor: "green",
+                    color: "green",
+                    fontSize: 32,
+                    fontWeight: "800",
+                    padding: 10,
+                  }}
+                >
+                  LIKE
+                </Text>
+              </Animated.View>
 
-            <Animated.View
-              style={{
-                opacity: dislikeOpacity,
-                transform: [{ rotate: "30deg" }],
-                position: "absolute",
-                top: 50,
-                right: 40,
-                zIndex: 1000,
-              }}
-            >
-              <Text
+              <Animated.View
                 style={{
-                  borderWidth: 1,
-                  borderColor: "red",
-                  color: "red",
-                  fontSize: 32,
-                  fontWeight: "800",
-                  padding: 10,
+                  opacity: dislikeOpacity,
+                  transform: [{ rotate: "30deg" }],
+                  position: "absolute",
+                  top: 50,
+                  right: 40,
+                  zIndex: 1000,
                 }}
               >
-                NOPE
+                <Text
+                  style={{
+                    borderWidth: 1,
+                    borderColor: "red",
+                    color: "red",
+                    fontSize: 32,
+                    fontWeight: "800",
+                    padding: 10,
+                  }}
+                >
+                  NOPE
+                </Text>
+              </Animated.View>
+              <Text
+                style={{ color: "blue" }}
+                onPress={() => Linking.openURL(item.itemWebUrl)}
+              >
+                {item.title}
               </Text>
+              <Text>£{item.price.value}</Text>
+              <Image
+                style={{
+                  flex: 1,
+                  height: null,
+                  width: null,
+                  resizeMode: "cover",
+                  borderRadius: 20,
+                }}
+                source={{
+                  uri: item.image.imageUrl,
+                }}
+              />
             </Animated.View>
-            <Text
-              style={{ color: "blue" }}
-              onPress={() => Linking.openURL(item.itemWebUrl)}
+          );
+        } else {
+          return (
+            <Animated.View
+              key={item.id}
+              style={[
+                {
+                  opacity: nextCardOpacity,
+                  transform: [{ scale: nextCardScale }],
+                  height: SCREEN_HEIGHT - 120,
+                  width: SCREEN_WIDTH,
+                  padding: 10,
+                  position: "absolute",
+                },
+              ]}
             >
-              {item.title}
-            </Text>
-            <Text>£{item.price.value}</Text>
-            <Image
-              style={{
-                flex: 1,
-                height: null,
-                width: null,
-                resizeMode: "cover",
-                borderRadius: 20,
-              }}
-              source={item.image.imageUrl}
-            />
-          </Animated.View>
-        );
-      } else {
-        return (
-          <Animated.View
-            key={item.id}
-            style={[
-              {
-                opacity: nextCardOpacity,
-                transform: [{ scale: nextCardScale }],
-                height: SCREEN_HEIGHT - 120,
-                width: SCREEN_WIDTH,
-                padding: 10,
-                position: "absolute",
-              },
-            ]}
-          >
-            <Image
-              style={{
-                flex: 1,
-                height: null,
-                width: null,
-                resizeMode: "cover",
-                borderRadius: 20,
-              }}
-              source={item.image.imageUrl}
-            />
-          </Animated.View>
-        );
-      }
-    }).reverse();
+              <Image
+                style={{
+                  flex: 1,
+                  height: null,
+                  width: null,
+                  resizeMode: "cover",
+                  borderRadius: 20,
+                }}
+                source={{
+                  uri: item.image.imageUrl,
+                }}
+              />
+            </Animated.View>
+          );
+        }
+      }).reverse()
+    );
   };
 
   return (
