@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, Button } from "react-native";
 import React, {useState} from 'react';
 import { TouchableOpacity } from "react-native";
-import NegativeCollectForm from "./NegativeCollectForm";
+
 import { useRoute } from "@react-navigation/native";
 
 const PositiveCollectForm = ( {navigation} ) => {

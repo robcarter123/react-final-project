@@ -14,7 +14,7 @@ import {
 } from "react-native";
 import { fetchUsers } from "../utils";
 
-const WelcomePage = () => {
+const WelcomePage = ({navigation}) => {
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
