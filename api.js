@@ -42,6 +42,6 @@ export const fetchItemsFromEbay = (keywords) => {
     })
     .catch((err) => console.log(err));
 };
-fetchItemsFromEbay([]);
+//fetchItemsFromEbay([]);
 
 // module.exports = { postWordToModel, fetchItemsFromEbay };
