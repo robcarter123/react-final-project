@@ -1,11 +1,14 @@
-const axios = require("axios");
-const positive = ["King", "Man"];
-const negative = ["queen"];
-const postWordToModel = (pos, neg) => {
-  const positive = pos.map((word) => word.toLowerCase());
+import axios from "axios";
+// const positive = ["King", "Man"];
+// const negative = ["queen"];
+export const postWordToModel = (pos, neg) => {
+  console.log(pos, "pos");
+  const positive = pos.map((word) => word[0].toLowerCase());
   const negative = neg.map((word) => word.toLowerCase());
-  axios
-    .post("https://flask-keyword-api.herokuapp.com/model", {
+  console.log(positive);
+  console.log(negative);
+  return axios
+    .post("https://slh-keyword-api.herokuapp.com/model", {
       positive,
       negative,
     })
@@ -17,24 +20,28 @@ const postWordToModel = (pos, neg) => {
 };
 // postModeledWord(positive, negative);
 
-const fetchItemsFromEbay = (keywords) => {
+export const fetchItemsFromEbay = (keywords) => {
   const searchQuery = keywords
     .slice(0, 4)
     .map((nestedArray) => {
       return nestedArray[0];
     })
     .join(" ");
-
   return axios
     .get(
       `https://nc-ebay-api.herokuapp.com/api/ebayCall?keyword=${searchQuery}`
     )
-    .then(({ data }) => {
-      console.log(data);
-      return data;
+    .then(({ data: { items } }) => {
+      const itemsToReturn = items.map((item) => {
+        item.keyword = item.categories[0].categoryName
+          .replace(/[^a-zA-Z\s]+/g, "")
+          .replace(/\s+/g, "+");
+        return item;
+      });
+      return itemsToReturn;
     })
     .catch((err) => console.log(err));
 };
-// fetchItemsFromEbay(keywords);
+fetchItemsFromEbay([]);
 
-module.exports = { postWordToModel, fetchItemsFromEbay };
+// module.exports = { postWordToModel, fetchItemsFromEbay };
