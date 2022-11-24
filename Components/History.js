@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
     // alignContent: 'center',
     flexDirection: "column",
     alignItems: "center",
-    marginBottom: "1",
+    marginBottom: "1px",
     fontSize: 19,
   },
   name: {
