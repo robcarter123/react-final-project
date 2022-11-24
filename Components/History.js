@@ -55,8 +55,6 @@ export default function History({ navigation }) {
     },
   ];
 
-  console.log(itemHistory[0].itemWebUrl);
-
   const onePresent = ({ item }) => (
     <Card>
       <View style={styles.item}>
@@ -111,15 +109,12 @@ const styles = StyleSheet.create({
     padding: "5px",
   },
   price: {
-    // transform: [{ translateX: -100 }],
-    // alignContent: 'center',
     flexDirection: "column",
     alignItems: "center",
     marginBottom: "1px",
     fontSize: 19,
   },
   name: {
-    // transform: [{ translateY: -30 }, { translateX: 10 }],
     fontSize: 20,
     marginBottom: "5%",
   },
@@ -148,7 +143,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   seperator: {
-    height: 1,
+    height: "1px",
     width: "100%",
     backgroundColor: "#CCC",
   },
