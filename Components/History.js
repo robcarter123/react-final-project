@@ -15,7 +15,7 @@ import { createNativeStackNavigator } from "react-navigation-stack";
 export default function History({ navigation }) {
   const itemHistory = navigation.state.params.historyState;
   const recipient = navigation.state.params.recipient;
-  console.log(itemHistory);
+  console.log(recipient);
 
   const present = [
     {
@@ -59,13 +59,13 @@ export default function History({ navigation }) {
     <Card>
       <View style={styles.item}>
         <View style={styles.avatarContainer}>
-          {/* <Image source={item.image} style={styles.avatarContainer} /> */}
+          <Image source={item.image} style={styles.avatarContainer} />
         </View>
         <View style={styles.textContainer}>
           <Text
             numberOfLines={2}
             style={styles.name}
-            // onPress={() => Linking.openURL(item.itemWebUrl)}
+            onPress={() => Linking.openURL(item.itemWebUrl)}
           >
             {item.name}
           </Text>
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   seperator: {
-    height: "1px",
+    height: "2px",
     width: "100%",
     backgroundColor: "#CCC",
   },
