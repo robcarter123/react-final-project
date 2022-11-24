@@ -65,7 +65,7 @@ export default function History({ navigation }) {
           <Text
             numberOfLines={2}
             style={styles.name}
-            onPress={() => Linking.openURL(item.itemWebUrl)}
+            // onPress={() => Linking.openURL(item.itemWebUrl)}
           >
             {item.name}
           </Text>

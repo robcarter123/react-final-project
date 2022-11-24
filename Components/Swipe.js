@@ -92,9 +92,9 @@ const Swipe = ({ navigation }) => {
         currentIndex: 0,
         keyword: items[0]["keyword"],
         name: items[0].title,
-        image: items[0].image.imageUrl,
+        // image: items[0].image.imageUrl,
         price: items[0].price.value,
-        itemWebUrl: items[0].itemWebUrl,
+        // itemWebUrl: items[0].itemWebUrl,
       });
     });
   }, []);
@@ -190,7 +190,7 @@ const Swipe = ({ navigation }) => {
   };
 
   const updateData = () => {
-    console.log(Users[0].itemWebUrl);
+    // console.log(Users[0].itemWebUrl);
     setModelCount((current) => current + 1);
     setCount((current) => current + 1);
     setState((state) => {
@@ -224,9 +224,9 @@ const Swipe = ({ navigation }) => {
           {
             keyword: state.keyword,
             name: state.name,
-            image: state.image,
+            // image: state.image,
             price: state.price,
-            itemWebUrl: state.itemWebUrl,
+            // itemWebUrl: state.itemWebUrl,
           },
         ];
       });
@@ -235,9 +235,9 @@ const Swipe = ({ navigation }) => {
         currentIndex: state?.currentIndex + 1,
         keyword: Users?.[state?.currentIndex + 1]?.["keyword"],
         name: Users?.[state?.currentIndex + 1]?.title,
-        image: Users?.[state?.currentIndex + 1]?.image.imageUrl,
+        // image: Users?.[state?.currentIndex + 1]?.image.imageUrl,
         price: Users?.[state?.currentIndex + 1]?.price.value,
-        itemWebUrl: Users?.[state?.currentIndex + 1]?.itemWebUrl,
+        // itemWebUrl: Users?.[state?.currentIndex + 1]?.itemWebUrl,
       };
     });
     position.setValue({ x: 0, y: 0 });
@@ -275,9 +275,9 @@ const Swipe = ({ navigation }) => {
         currentIndex: state?.currentIndex + 1,
         keyword: Users?.[state?.currentIndex + 1]?.["keyword"],
         name: Users?.[state?.currentIndex + 1]?.title,
-        image: Users?.[state?.currentIndex + 1]?.image.imageUrl,
+        // image: Users?.[state?.currentIndex + 1]?.image.imageUrl,
         price: Users?.[state?.currentIndex + 1]?.price.value,
-        itemWebUrl: Users?.[state?.currentIndex + 1]?.itemWebUrl,
+        // itemWebUrl: Users?.[state?.currentIndex + 1]?.itemWebUrl,
       };
     });
     position.setValue({ x: 0, y: 0 });
