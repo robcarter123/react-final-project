@@ -103,8 +103,10 @@ const Swipe = ({ navigation }) => {
       setState({
         currentIndex: 0,
         keyword: items[0]["keyword"],
+        name: items[0].title,
         image: items[0].image.imageUrl,
-        slug: items[0]["slug"],
+        price: items[0].price.value,
+        itemUrl: items[0],
       });
     });
   }, []);
@@ -227,15 +229,26 @@ const Swipe = ({ navigation }) => {
           return newArr;
         });
       }
-      setHistoryState((current) => [
-        ...current,
-        { keyword: state.keyword, image: state.image, slug: state.slug },
-      ]);
+      setHistoryState((current) => {
+        console.log(state);
+        return [
+          ...current,
+          {
+            keyword: state.keyword,
+            name: state.name,
+            image: state.image,
+            price: state.price,
+            slug: state.slug,
+          },
+        ];
+      });
+      console.log(historyState, "<<<<<<<<<<<<<history");
       return {
         currentIndex: state?.currentIndex + 1,
         keyword: Users?.[state?.currentIndex + 1]?.["keyword"],
+        name: Users?.[state?.currentIndex + 1]?.title,
         image: Users?.[state?.currentIndex + 1]?.image.imageUrl,
-        slug: Users?.[state?.currentIndex + 1]?.["slug"],
+        price: Users?.[state?.currentIndex + 1]?.price.value,
       };
     });
     position.setValue({ x: 0, y: 0 });
@@ -267,25 +280,13 @@ const Swipe = ({ navigation }) => {
         return newArr;
       });
     }
-    //     setState(state => {
-    //       let count = 1;
-    //       for (let i = 0; i < positiveArr.length; i++) {
-    //         if (positiveArr[i][0] === state["keyword"]) {
-    //           positiveArr[i][1] = positiveArr[i][1] - 0.01;
-    //           break;
-    //         } else {
-    //           // count++;
-    // >>>>>>> main
-    //         }
-
-    //       });
-    //     }
     setState((state) => {
       return {
         currentIndex: state?.currentIndex + 1,
         keyword: Users?.[state?.currentIndex + 1]?.["keyword"],
+        name: Users[state.currentIndex + 1].keyword,
         image: Users?.[state?.currentIndex + 1]?.image.imageUrl,
-        slug: Users?.[state?.currentIndex + 1]?.["slug"],
+        price: Users?.[state?.currentIndex + 1]?.["price"],
       };
     });
     position.setValue({ x: 0, y: 0 });
