@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   StyleSheet,
   Text,
@@ -19,6 +19,8 @@ const WelcomePage = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [warningOpacity, setWarningOpacity] = useState(0);
+
+  const passwordRef = useRef();
 
   const pressHandler = () => {
     setWarningOpacity(0);
@@ -55,18 +57,19 @@ const WelcomePage = ({ navigation }) => {
         <View style={styles.inputView}>
           <TextInput
             style={styles.TextInput}
-            placeholder="Username."
-            placeholderTextColor="#003f5c"
+            placeholder="Username"
+            returnKeyType="next"
+            onSubmitEditing={() => passwordRef.current.focus()}
             onChangeText={(user) => setUser(user)}
           />
         </View>
-
         <View style={styles.inputView}>
           <TextInput
             style={styles.TextInput}
-            placeholder="Password."
-            placeholderTextColor="#003f5c"
-            secureTextEntry={true}
+            placeholder="Password"
+            ref={passwordRef}
+            secureTextEntry
+            returnKeyType="done"
             onChangeText={(password) => setPassword(password)}
           />
         </View>
