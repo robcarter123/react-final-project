@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
   price: {
     flexDirection: "column",
     alignItems: "center",
-    marginBottom: "1px",
+    // marginBottom: "1px",
     fontSize: 19,
   },
   name: {
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   seperator: {
-    height: "2px",
+    height: 1,
     width: "100%",
     backgroundColor: "#CCC",
   },
