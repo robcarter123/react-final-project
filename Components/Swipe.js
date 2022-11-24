@@ -1,7 +1,7 @@
 import { NavigationContainer, StackActions } from "@react-navigation/native";
 import { createNativeStackNavigator } from "react-navigation-stack";
 import React, { useState, useEffect } from "react";
-import { StyleSheet, ActivityIndicator } from "react-native";
+import { StyleSheet, ActivityIndicator, ImageBackground } from "react-native";
 import {
   Text,
   View,
@@ -20,25 +20,13 @@ const SCREEN_WIDTH = Dimensions.get("window").width;
 
 const Swipe = ({ navigation }) => {
   let likesArr = navigation.state.params.positiveCategories;
+  const recipient = navigation.state.params.recipient;
 
   const [positiveArr, setPositiveArr] = useState(
     likesArr.map((word) => {
       return [word, 0.5];
     })
   );
-  // [
-  //   ["doll", 0.7578607797622681],
-  //   ["shoe", 0.7505601048469543],
-  //   ["dolls", 0.7128548622131348],
-  //   ["handbag", 0.6836262941360474],
-  //   ["boots", 0.6653067469596863],
-  //   ["shoes", 0.6612709760665894],
-  //   ["candy", 0.6533358693122864],
-  //   ["jewelry", 0.6434913277626038],
-  //   ["denim", 0.6392609477043152],
-  //   ["wig", 0.6287851929664612],
-  //   ["test", 0.9],
-  // ]
 
   const [historyState, setHistoryState] = useState([]);
 
@@ -106,7 +94,7 @@ const Swipe = ({ navigation }) => {
         name: items[0].title,
         image: items[0].image.imageUrl,
         price: items[0].price.value,
-        itemUrl: items[0],
+        itemWebUrl: items[0].itemWebUrl,
       });
     });
   }, []);
@@ -143,7 +131,7 @@ const Swipe = ({ navigation }) => {
   });
 
   const pressHandler = () => {
-    navigation.navigate("History", { historyState });
+    navigation.navigate("History", { historyState, recipient });
   };
 
   const panResponder = PanResponder.create({
@@ -202,7 +190,7 @@ const Swipe = ({ navigation }) => {
   };
 
   const updateData = () => {
-    console.log(positiveArr);
+    console.log(Users[0].itemWebUrl);
     setModelCount((current) => current + 1);
     setCount((current) => current + 1);
     setState((state) => {
@@ -238,7 +226,7 @@ const Swipe = ({ navigation }) => {
             name: state.name,
             image: state.image,
             price: state.price,
-            slug: state.slug,
+            itemWebUrl: state.itemWebUrl,
           },
         ];
       });
@@ -249,6 +237,7 @@ const Swipe = ({ navigation }) => {
         name: Users?.[state?.currentIndex + 1]?.title,
         image: Users?.[state?.currentIndex + 1]?.image.imageUrl,
         price: Users?.[state?.currentIndex + 1]?.price.value,
+        itemWebUrl: Users?.[state?.currentIndex + 1]?.itemWebUrl,
       };
     });
     position.setValue({ x: 0, y: 0 });
@@ -359,13 +348,19 @@ const Swipe = ({ navigation }) => {
 
   return (
     <View style={{ backgroundColor: "#fff", flex: 1 }}>
+      {/* <ImageBackground
+        source={require("../images/background.jpg")}
+        resizeMode="cover"
+      >
+        <View> */}
       <View style={{ height: 0 }}></View>
       <View style={styles.container}>{renderUsers()}</View>
       <View style={{ height: 0 }}></View>
-      <Button onPress={pressHandler} title="confirm"></Button>
       <TouchableOpacity style={styles.submitBtn} onPress={pressHandler}>
-        <Text style={styles.submitText}>Next</Text>
+        <Text style={styles.submitText}>View Your Liked Items</Text>
       </TouchableOpacity>
+      {/* </View>
+      </ImageBackground> */}
     </View>
   );
 };
@@ -380,8 +375,10 @@ const styles = StyleSheet.create({
   card: {
     display: "flex",
     flex: 1,
-    backgroundColor: "#F7EAB7",
+    backgroundColor: "#fff",
     borderRadius: 10,
+    borderColor: "#F7EAB7",
+    borderWidth: "5px",
   },
   textTitle: {
     fontSize: 20,
@@ -400,6 +397,10 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     height: "66%",
     width: "66%",
+    resizeMode: "contain",
+    borderRadius: 13,
+    // borderWidth: "2px",
+    backgroundColor: "#fff",
   },
   textLike: {
     borderWidth: 1,
@@ -427,6 +428,10 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginVertical: 5,
     backgroundColor: "#1E792C",
+  },
+  submitText: {
+    color: "#fff",
+    fontWeight: "bolder",
   },
 });
 

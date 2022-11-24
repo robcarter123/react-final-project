@@ -8,33 +8,40 @@ import Swipe from "../Components/Swipe";
 import History from "../Components/History";
 import Header from "../Components/shared/Header";
 import WelcomePage from "../Components/WelcomePage";
-
+import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 const screens = {
-  "Santa's Little Helper": {
-    screen: WelcomePage
+  " ": {
+    screen: WelcomePage,
+    navigationOptions: {
+      header: null,
+      cardStyle: { backgroundColor: "#96B5CB" },
+    },
   },
-  PositiveCollectForm: {
+  "Get the ball rolling...": {
     screen: PositiveCollectForm,
-    navigationOptions: ({ navigation }) => {
-      return {
-        // headerTitle: () => <Header navigation={navigation} />
-      };
-    }
+    navigationOptions: {
+      headerStyle: { backgroundColor: "#96B5CB" },
+      cardStyle: { backgroundColor: "#96B5CB" },
+    },
   },
-  Swipe: {
+  "Swipe right if you like...": {
     screen: Swipe,
     navigationOptions: () => {
       // headerTitle: () => <Header navigation={navigation} />
-    }
+    },
   },
   History: {
     screen: History,
-    navigationOptions: {
-      headerStyle: { backgroundColor: "#555" }
-    }
-  }
+    navigationOptions: {},
+  },
 };
-
+// const navTheme = {
+//   ...DefaultTheme,
+//   colors: {
+//     ...DefaultTheme.colors,
+//     background: "transparent",
+//   },
+// };
 const HomeStack = createStackNavigator(screens);
 
 export default createAppContainer(HomeStack);
