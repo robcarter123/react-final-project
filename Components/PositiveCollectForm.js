@@ -72,7 +72,7 @@ const PositiveCollectForm = ({ navigation }) => {
               onPress={() => pickCategories(option)}
             >
               {positiveCategories.includes(option) && (
-                <Text style={styles.check}>⭐</Text>
+                <Text style={styles.check}>🎁</Text>
               )}
             </TouchableOpacity>
             <Text style={styles.categoryName}>{option}</Text>
