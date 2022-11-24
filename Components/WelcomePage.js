@@ -11,6 +11,7 @@ import {
   ScrollView,
   ActivityIndicator,
   SafeAreaView,
+  ImageBackground,
 } from "react-native";
 import { fetchUsers } from "../utils";
 
@@ -32,7 +33,7 @@ const WelcomePage = ({ navigation }) => {
           console.log(u.username === user, u.password === password);
           if (u.username === user && u.password === password) {
             console.log("yay!");
-            navigation.navigate("PositiveCollectForm", { user });
+            navigation.navigate("Get the ball rolling...", { user });
             setIsLoading(false);
             setWarningOpacity(0);
           }
@@ -46,7 +47,7 @@ const WelcomePage = ({ navigation }) => {
   };
 
   const renderLogin = (
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }} style={styles.page}>
       <KeyboardAvoidingView
         style={styles.container}
         // behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -75,7 +76,7 @@ const WelcomePage = ({ navigation }) => {
         </View>
 
         <TouchableOpacity>
-          <Text style={styles.forgot_button}>Forgot Password?</Text>
+          <Text style={styles.forgot_button}>Sign up</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.loginBtn} onPress={pressHandler}>
@@ -98,7 +99,7 @@ const WelcomePage = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "transparent",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -110,7 +111,8 @@ const styles = StyleSheet.create({
   },
 
   inputView: {
-    backgroundColor: "#f7eab7",
+    // backgroundColor: "#f7eab7",
+    backgroundColor: "#fff",
     borderRadius: 30,
     width: "70%",
     height: 45,
@@ -137,6 +139,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginTop: 10,
     backgroundColor: "#1E792C",
+  },
+  loginText: {
+    fontWeight: "bolder",
+    color: "#fff",
   },
 });
 

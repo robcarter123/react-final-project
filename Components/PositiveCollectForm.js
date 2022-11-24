@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   StatusBar,
-  TextInput
+  TextInput,
 } from "react-native";
 import React, { useState } from "react";
 
@@ -20,7 +20,11 @@ const PositiveCollectForm = ({ navigation }) => {
 
   const pressHandler = () => {
     if (positiveCategories.length >= 1) {
-      navigation.navigate("Swipe", { positiveCategories, negativeArr });
+      navigation.navigate("Swipe right if you like...", {
+        positiveCategories,
+        negativeArr,
+        recipient,
+      });
       console.log(positiveCategories);
       setWarningOpacity(0);
       setRecipient(recipient);
@@ -30,25 +34,21 @@ const PositiveCollectForm = ({ navigation }) => {
     }
   };
 
-  const option = [
-    "Electronics",
-    "Garden Furniture",
-    "Candles",
-    "Sports Equipment",
-    "Board Games"
-  ];
+  const option = ["Toys", "Jewellery", "Candles", "Sports", "Books"];
 
   function pickCategories(selectedCategories) {
     if (positiveCategories.includes(selectedCategories)) {
       setPositiveCategories(
         positiveCategories.filter(
-          Categories => Categories !== selectedCategories
+          (Categories) => Categories !== selectedCategories
         )
       );
       return;
     }
 
-    setPositiveCategories(Categories => Categories.concat(selectedCategories));
+    setPositiveCategories((Categories) =>
+      Categories.concat(selectedCategories)
+    );
   }
 
   return (
@@ -60,12 +60,12 @@ const PositiveCollectForm = ({ navigation }) => {
           style={styles.TextInput}
           placeholder="Enter a name or nickname here"
           returnKeyType="done"
-          onChangeText={recipient => setRecipient(recipient)}
+          onChangeText={(recipient) => setRecipient(recipient)}
         />
       </View>
       <Text style={styles.title}>Choose one or more starter categories:</Text>
       <View style={styles.options}>
-        {option.map(option => (
+        {option.map((option) => (
           <View key={option} style={styles.Categories}>
             <TouchableOpacity
               style={styles.checkBox}
@@ -80,14 +80,14 @@ const PositiveCollectForm = ({ navigation }) => {
         ))}
       </View>
       <TouchableOpacity style={styles.submitBtn} onPress={pressHandler}>
-        <Text>Next</Text>
+        <Text style={styles.submitText}>Next</Text>
       </TouchableOpacity>
       <Text
         style={{
           marginVertical: 5,
           alignSelf: "center",
           color: "red",
-          opacity: warningOpacity
+          opacity: warningOpacity,
         }}
       >
         Please select 1 option to get started
@@ -99,18 +99,22 @@ const PositiveCollectForm = ({ navigation }) => {
 export default PositiveCollectForm;
 
 const styles = StyleSheet.create({
+  submitText: {
+    color: "#fff",
+    fontWeight: "bolder",
+  },
   inputView: {
     display: "flex",
     flexDirection: "row",
     marginVertical: 10,
     marginBottom: 40,
-    backgroundColor: "#F7EAB7",
-    borderRadius: 10
+    backgroundColor: "#fff",
+    borderRadius: 10,
   },
   TextInput: {
     flex: 1,
     height: 50,
-    marginLeft: 20
+    marginLeft: 20,
   },
   submitBtn: {
     display: "flex",
@@ -121,11 +125,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignSelf: "center",
     marginTop: 10,
-    backgroundColor: "#1E792C"
+    backgroundColor: "#1E792C",
   },
   categoryName: {
     textTransform: "capitalize",
-    fontSize: 16
+    fontSize: 16,
   },
   checkBox: {
     alignItems: "center",
@@ -135,7 +139,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#999",
     marginLeft: 20,
-    marginRight: 5
+    marginRight: 5,
   },
   Categories: {
     display: "flex",
@@ -144,25 +148,26 @@ const styles = StyleSheet.create({
     alignItems: "center",
     maxHeight: 50,
     marginVertical: 10,
-    backgroundColor: "#F7EAB7",
-    borderRadius: 10
+    backgroundColor: "#fff",
+    borderRadius: 10,
   },
   options: {
     display: "flex",
-    flex: 1
+    flex: 1,
   },
   title: {
     display: "flex",
     alignSelf: "flex-start",
     fontSize: 18,
-    fontWeight: "600"
+    fontWeight: "600",
   },
   container: {
     display: "flex",
     flex: 1,
     margin: 20,
-    marginVertical: 10
-  }
+    marginVertical: 10,
+    backgroundColor: "transparent",
+  },
 });
 
 // const styles = StyleSheet.create({
