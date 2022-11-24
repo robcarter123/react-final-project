@@ -246,6 +246,7 @@ const Swipe = ({ navigation }) => {
 
   const updateNegativeData = () => {
     setModelCount((current) => current + 1);
+    setCount((current) => current + 1);
 
     let count = 1;
     for (let i = 0; i < positiveArr.length; i++) {
@@ -273,9 +274,10 @@ const Swipe = ({ navigation }) => {
       return {
         currentIndex: state?.currentIndex + 1,
         keyword: Users?.[state?.currentIndex + 1]?.["keyword"],
-        name: Users[state.currentIndex + 1].keyword,
+        name: Users?.[state?.currentIndex + 1]?.title,
         image: Users?.[state?.currentIndex + 1]?.image.imageUrl,
-        price: Users?.[state?.currentIndex + 1]?.["price"],
+        price: Users?.[state?.currentIndex + 1]?.price.value,
+        itemWebUrl: Users?.[state?.currentIndex + 1]?.itemWebUrl,
       };
     });
     position.setValue({ x: 0, y: 0 });
@@ -290,7 +292,7 @@ const Swipe = ({ navigation }) => {
         i === state.currentIndex ? (
           <Animated.View
             {...panResponder.panHandlers}
-            key={item.id}
+            key={item.price.value}
             style={[
               rotateAndTranslate,
               {

@@ -20,14 +20,25 @@ const screens = {
   "Get the ball rolling...": {
     screen: PositiveCollectForm,
     navigationOptions: {
-      headerStyle: { backgroundColor: "#96B5CB" },
+      headerStyle: {
+        backgroundColor: "#96B5CB",
+        borderBottomWidth: 0,
+        shadowColor: "transparent", // this covers iOS
+        elevation: 0,
+      }, // this covers Android},
       cardStyle: { backgroundColor: "#96B5CB" },
     },
   },
   "Swipe right if you like...": {
     screen: Swipe,
-    navigationOptions: () => {
-      // headerTitle: () => <Header navigation={navigation} />
+    navigationOptions: {
+      headerStyle: {
+        backgroundColor: "#96B5CB",
+        borderBottomWidth: 0,
+        shadowColor: "transparent", // this covers iOS
+        elevation: 0,
+      }, // this covers Android},
+      cardStyle: { backgroundColor: "#96B5CB" },
     },
   },
   History: {

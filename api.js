@@ -3,16 +3,16 @@ import axios from "axios";
 // const negative = ["queen"];
 export const postWordToModel = (arr) => {
   const positive = [];
-  const negative = [];
+  const negative = ["tea"];
   arr.forEach((word) => {
     console.log(word[0], "<<< wordzero");
-    word[0] = word[0].split("+")[0];
     if (word[1] > 0) {
+      word[0] = word[0].split("+")[0];
       positive.push(word[0].toLowerCase());
     }
-    if (word[1] < 0) {
-      negative.push(word[0].toLowerCase());
-    }
+    // if (word[1] < 0) {
+    //   negative.push(word[0].toLowerCase());
+    // }
   });
 
   return axios
