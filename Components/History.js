@@ -5,7 +5,7 @@ import {
   FlatList,
   SafeAreaView,
   Image,
-  Linking,
+  Linking
 } from "react-native";
 import Card from "./shared/Card";
 import React from "react";
@@ -15,7 +15,6 @@ import { createNativeStackNavigator } from "react-navigation-stack";
 export default function History({ navigation }) {
   const itemHistory = navigation.state.params.historyState;
   const recipient = navigation.state.params.recipient;
-  console.log(recipient);
 
   const present = [
     {
@@ -23,43 +22,43 @@ export default function History({ navigation }) {
       name: "PresentOneAndAlotofotherwords and letter and stuff",
       slug: "PresentOne Slug",
       image: require("../assets/present.jpeg"),
-      price: 5,
+      price: 5
     },
     {
       id: 2,
       name: "PresentOneAndAlotofotherwords and letter and stuff",
       slug: "PresentTwo Slug",
       image: require("../assets/present2.jpeg"),
-      price: 5,
+      price: 5
     },
     {
       id: 3,
       name: "PresentThree",
       slug: "PresentThree Slug",
       image: require("../assets/present3.jpeg"),
-      price: 5,
+      price: 5
     },
     {
       id: 4,
       name: "PresentFour",
       slug: "PresentFour Slug",
       image: require("../assets/present4.jpeg"),
-      price: 5,
+      price: 5
     },
     {
       id: 5,
       name: "PresentFive",
       slug: "PresentFive Slug",
       image: require("../assets/present5.jpeg"),
-      price: 5,
-    },
+      price: 5
+    }
   ];
 
   const onePresent = ({ item }) => (
     <Card>
       <View style={styles.item}>
         <View style={styles.avatarContainer}>
-          <Image source={item.image} style={styles.avatarContainer} />
+          <Image source={{ uri: item.image }} style={styles.avatarContainer} />
         </View>
         <View style={styles.textContainer}>
           <Text
@@ -106,28 +105,28 @@ const styles = StyleSheet.create({
     // backgroundColor: "green",
     height: "100%",
     width: "68%",
-    padding: "5px",
+    padding: 5
   },
   price: {
     flexDirection: "column",
     alignItems: "center",
     // marginBottom: "1px",
-    fontSize: 19,
+    fontSize: 19
   },
   name: {
     fontSize: 20,
-    marginBottom: "5%",
+    marginBottom: "5%"
   },
   listHeadline: {
     color: "#E93629",
     fontSize: 21,
-    fontWeight: "bold",
+    fontWeight: "bold"
   },
   item: {
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 13,
+    paddingVertical: 13
   },
   avatarContainer: {
     borderRadius: 100,
@@ -135,16 +134,16 @@ const styles = StyleSheet.create({
     width: 89,
     justifyContent: "center",
     alignItems: "center",
-    margin: 10,
+    margin: 10
   },
   listHeader: {
     height: 55,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "center"
   },
   seperator: {
     height: 1,
     width: "100%",
-    backgroundColor: "#CCC",
-  },
+    backgroundColor: "#CCC"
+  }
 });

@@ -383,7 +383,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderRadius: 10,
     borderColor: "#F7EAB7",
-    borderWidth: "5px",
+    borderWidth: 5,
   },
   textTitle: {
     fontSize: 20,
@@ -404,7 +404,7 @@ const styles = StyleSheet.create({
     width: "66%",
     resizeMode: "contain",
     borderRadius: 13,
-    // borderWidth: "2px",
+    borderWidth: 2,
     backgroundColor: "#fff",
   },
   textLike: {
