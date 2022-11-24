@@ -62,25 +62,25 @@ const Swipe = ({ navigation }) => {
       extrapolate: "clamp",
     })
   );
-  useEffect(() => {
-    if (modelCount === 3) {
-      postWordToModel(positiveArr).then(({ keywords: [one, two] }) => {
-        setPositiveArr((current) => {
-          let newArr = [...current];
-          for (let i = 0; i < newArr.length; i++) {
-            console.log(two);
-            if (newArr[i][1] < two[1]) {
-              newArr.splice(i, 0, two);
-              break;
-            }
-          }
-          return newArr;
-        });
+  // useEffect(() => {
+  //   if (modelCount === 3) {
+  //     postWordToModel(positiveArr).then(({ keywords: [one, two] }) => {
+  //       setPositiveArr((current) => {
+  //         let newArr = [...current];
+  //         for (let i = 0; i < newArr.length; i++) {
+  //           console.log(two);
+  //           if (newArr[i][1] < two[1]) {
+  //             newArr.splice(i, 0, two);
+  //             break;
+  //           }
+  //         }
+  //         return newArr;
+  //       });
 
-        setModelCount(0);
-      });
-    }
-  }, [modelCount]);
+  //       setModelCount(0);
+  //     });
+  //   }
+  // }, [modelCount]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -330,7 +330,7 @@ const Swipe = ({ navigation }) => {
             <View style={styles.card}>
               <Text
                 style={styles.textTitle}
-                onPress={() => Linking.openURL(item.itemWebUrl)}
+                // onPress={() => Linking.openURL(item.itemWebUrl)}
                 numberOfLines={2}
               >
                 {item.title}
@@ -338,9 +338,11 @@ const Swipe = ({ navigation }) => {
               <Text style={styles.textPrice}>£{item.price.value}</Text>
               <Image
                 style={styles.image}
-                source={{
-                  uri: item.image.imageUrl,
-                }}
+                source={
+                  {
+                    // uri: item.image.imageUrl,
+                  }
+                }
               />
             </View>
           </Animated.View>
