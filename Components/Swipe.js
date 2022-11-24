@@ -331,8 +331,9 @@ const Swipe = ({ navigation }) => {
               <Text
                 style={styles.textTitle}
                 onPress={() => Linking.openURL(item.itemWebUrl)}
+                numberOfLines={2}
               >
-                {`${item.title.substring(0, 30)}...`}
+                {item.title}
               </Text>
               <Text style={styles.textPrice}>£{item.price.value}</Text>
               <Image
