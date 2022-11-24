@@ -11,7 +11,7 @@ import {
   PanResponder,
   Linking,
   TouchableOpacity,
-  Button,
+  Button
 } from "react-native";
 import { fetchItemsFromEbay, postWordToModel } from "../api.js";
 
@@ -23,7 +23,7 @@ const Swipe = ({ navigation }) => {
   const recipient = navigation.state.params.recipient;
 
   const [positiveArr, setPositiveArr] = useState(
-    likesArr.map((word) => {
+    likesArr.map(word => {
       return [word, 0.5];
     })
   );
@@ -44,22 +44,22 @@ const Swipe = ({ navigation }) => {
     position.x.interpolate({
       inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
       outputRange: ["-10deg", "0deg", "10deg"],
-      extrapolate: "clamp",
+      extrapolate: "clamp"
     })
   );
   const [rotateAndTranslate, setRotateAndTranslate] = useState({
     transform: [
       {
-        rotate: rotate,
+        rotate: rotate
       },
-      ...position.getTranslateTransform(),
-    ],
+      ...position.getTranslateTransform()
+    ]
   });
   const [likeOpacity, setLikeOpacity] = useState(
     position.x.interpolate({
       inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
       outputRange: [0, 0, 1],
-      extrapolate: "clamp",
+      extrapolate: "clamp"
     })
   );
   // useEffect(() => {
@@ -84,9 +84,9 @@ const Swipe = ({ navigation }) => {
 
   useEffect(() => {
     setIsLoading(true);
-    fetchItemsFromEbay(positiveArr).then((items) => {
-      setUsers((current) => [...current, ...items]);
-      setCount((current) => current + 1);
+    fetchItemsFromEbay(positiveArr).then(items => {
+      setUsers(current => [...current, ...items]);
+      setCount(current => current + 1);
       setIsLoading(false);
       setState({
         currentIndex: 0,
@@ -94,7 +94,7 @@ const Swipe = ({ navigation }) => {
         name: items[0].title,
         image: items[0].image.imageUrl,
         price: items[0].price.value,
-        itemWebUrl: items[0].itemWebUrl,
+        itemWebUrl: items[0].itemWebUrl
       });
     });
   }, []);
@@ -102,10 +102,10 @@ const Swipe = ({ navigation }) => {
   useEffect(() => {
     if (count === 4) {
       setIsLoading(true);
-      fetchItemsFromEbay(positiveArr).then((items) => {
-        setUsers((current) => {
+      fetchItemsFromEbay(positiveArr).then(items => {
+        setUsers(current => {
           const newArr = [...current];
-          setCount((current) => 1);
+          setCount(current => 1);
           return [...newArr, ...items];
         });
         setIsLoading(false);
@@ -115,19 +115,19 @@ const Swipe = ({ navigation }) => {
   const dislikeOpacity = position.x.interpolate({
     inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
     outputRange: [1, 0, 0],
-    extrapolate: "clamp",
+    extrapolate: "clamp"
   });
 
   const nextCardOpacity = position.x.interpolate({
     inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
     outputRange: [1, 0, 1],
-    extrapolate: "clamp",
+    extrapolate: "clamp"
   });
 
   const nextCardScale = position.x.interpolate({
     inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
     outputRange: [1, 0.8, 0],
-    extrapolate: "clamp",
+    extrapolate: "clamp"
   });
 
   const pressHandler = () => {
@@ -145,14 +145,14 @@ const Swipe = ({ navigation }) => {
       if (gestureState.dx > 120) {
         Animated.spring(position, {
           toValue: { x: SCREEN_WIDTH + 100, y: gestureState.dy },
-          useNativeDriver: true,
+          useNativeDriver: true
         }).start(() => {
           updateData();
         });
       } else if (gestureState.dx < -120) {
         Animated.spring(position, {
           toValue: { x: -SCREEN_WIDTH - 100, y: gestureState.dy },
-          useNativeDriver: true,
+          useNativeDriver: true
         }).start(() => {
           updateNegativeData();
         });
@@ -160,10 +160,10 @@ const Swipe = ({ navigation }) => {
         Animated.spring(position, {
           toValue: { x: 0, y: 0 },
           friction: 4,
-          useNativeDriver: true,
+          useNativeDriver: true
         }).start();
       }
-    },
+    }
   });
 
   const checkIfGreaterOrLessThan = (i, arr) => {
@@ -174,13 +174,13 @@ const Swipe = ({ navigation }) => {
     console.log(arr);
 
     if (!start && arr[i][1] > arr[i - 1][1]) {
-      setPositiveArr((current) => {
+      setPositiveArr(current => {
         const newArr = [...current];
         newArr[i] = newArr.splice(i - 1, 1, newArr[i]).flat();
         if (!checkIfGreaterOrLessThan(i - 1, newArr)) return newArr;
       });
     } else if (!end && arr[i][1] < arr[i + 1][1]) {
-      setPositiveArr((current) => {
+      setPositiveArr(current => {
         const newArr = [...current];
         console.log(newArr[i]);
         newArr[i] = newArr.splice(i + 1, 1, newArr[i]).flat();
@@ -191,9 +191,9 @@ const Swipe = ({ navigation }) => {
 
   const updateData = () => {
     // console.log(Users[0].itemWebUrl);
-    setModelCount((current) => current + 1);
-    setCount((current) => current + 1);
-    setState((state) => {
+    setModelCount(current => current + 1);
+    setCount(current => current + 1);
+    setState(state => {
       let count = 1;
       for (let i = 0; i < positiveArr.length; i++) {
         if (positiveArr[i][0] === state["keyword"]) {
@@ -205,7 +205,7 @@ const Swipe = ({ navigation }) => {
         }
       }
       if (count === positiveArr.length + 1) {
-        setPositiveArr((current) => {
+        setPositiveArr(current => {
           let newArr = [...current];
           for (let i = 0; i < newArr.length; i++) {
             if (newArr[i][1] > 0.2) {
@@ -217,7 +217,7 @@ const Swipe = ({ navigation }) => {
           return newArr;
         });
       }
-      setHistoryState((current) => {
+      setHistoryState(current => {
         console.log(state);
         return [
           ...current,
@@ -226,8 +226,8 @@ const Swipe = ({ navigation }) => {
             name: state.name,
             image: state.image,
             price: state.price,
-            itemWebUrl: state.itemWebUrl,
-          },
+            itemWebUrl: state.itemWebUrl
+          }
         ];
       });
       console.log(historyState, "<<<<<<<<<<<<<history");
@@ -237,7 +237,7 @@ const Swipe = ({ navigation }) => {
         name: Users?.[state?.currentIndex + 1]?.title,
         image: Users?.[state?.currentIndex + 1]?.image.imageUrl,
         price: Users?.[state?.currentIndex + 1]?.price.value,
-        itemWebUrl: Users?.[state?.currentIndex + 1]?.itemWebUrl,
+        itemWebUrl: Users?.[state?.currentIndex + 1]?.itemWebUrl
       };
     });
     position.setValue({ x: 0, y: 0 });
@@ -245,8 +245,8 @@ const Swipe = ({ navigation }) => {
   };
 
   const updateNegativeData = () => {
-    setModelCount((current) => current + 1);
-    setCount((current) => current + 1);
+    setModelCount(current => current + 1);
+    setCount(current => current + 1);
 
     let count = 1;
     for (let i = 0; i < positiveArr.length; i++) {
@@ -259,7 +259,7 @@ const Swipe = ({ navigation }) => {
       }
     }
     if (count === positiveArr.length + 1) {
-      setPositiveArr((current) => {
+      setPositiveArr(current => {
         let newArr = [...current];
         for (let i = 0; i < newArr.length; i++) {
           if (newArr[i][1] > -0.2) {
@@ -270,14 +270,14 @@ const Swipe = ({ navigation }) => {
         return newArr;
       });
     }
-    setState((state) => {
+    setState(state => {
       return {
         currentIndex: state?.currentIndex + 1,
         keyword: Users?.[state?.currentIndex + 1]?.["keyword"],
         name: Users?.[state?.currentIndex + 1]?.title,
         image: Users?.[state?.currentIndex + 1]?.image.imageUrl,
         price: Users?.[state?.currentIndex + 1]?.price.value,
-        itemWebUrl: Users?.[state?.currentIndex + 1]?.itemWebUrl,
+        itemWebUrl: Users?.[state?.currentIndex + 1]?.itemWebUrl
       };
     });
     position.setValue({ x: 0, y: 0 });
@@ -299,8 +299,8 @@ const Swipe = ({ navigation }) => {
                 height: SCREEN_HEIGHT - 120,
                 width: SCREEN_WIDTH,
                 padding: 10,
-                position: "absolute",
-              },
+                position: "absolute"
+              }
             ]}
           >
             <Animated.View
@@ -310,7 +310,7 @@ const Swipe = ({ navigation }) => {
                 position: "absolute",
                 top: 50,
                 left: -100,
-                zIndex: 1000,
+                zIndex: 1000
               }}
             >
               <Text style={styles.textLike}>LIKE</Text>
@@ -322,7 +322,7 @@ const Swipe = ({ navigation }) => {
                 position: "absolute",
                 top: 50,
                 right: -120,
-                zIndex: 1000,
+                zIndex: 1000
               }}
             >
               <Text style={styles.textDislike}>NOPE</Text>
@@ -338,11 +338,9 @@ const Swipe = ({ navigation }) => {
               <Text style={styles.textPrice}>£{item.price.value}</Text>
               <Image
                 style={styles.image}
-                source={
-                  {
-                    uri: item.image.imageUrl,
-                  }
-                }
+                source={{
+                  uri: item.image.imageUrl
+                }}
               />
             </View>
           </Animated.View>
@@ -353,19 +351,12 @@ const Swipe = ({ navigation }) => {
 
   return (
     <View style={{ backgroundColor: "#fff", flex: 1 }}>
-      {/* <ImageBackground
-        source={require("../images/background.jpg")}
-        resizeMode="cover"
-      >
-        <View> */}
-      <View style={{ height: 0 }}></View>
-      <View style={styles.container}>{renderUsers()}</View>
-      <View style={{ height: 0 }}></View>
-      <TouchableOpacity style={styles.submitBtn} onPress={pressHandler}>
-        <Text style={styles.submitText}>View Your Liked Items</Text>
-      </TouchableOpacity>
-      {/* </View>
-      </ImageBackground> */}
+        <View style={{ height: 0 }}></View>
+        <View style={styles.container}>{renderUsers()}</View>
+        <View style={{ height: 0 }}></View>
+        <TouchableOpacity style={styles.submitBtn} onPress={pressHandler}>
+          <Text style={styles.submitText}>View Your Liked Items</Text>
+        </TouchableOpacity>
     </View>
   );
 };
@@ -375,7 +366,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "center"
   },
   card: {
     display: "flex",
@@ -383,19 +374,19 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderRadius: 10,
     borderColor: "#F7EAB7",
-    borderWidth: 5,
+    borderWidth: 5
   },
   textTitle: {
     fontSize: 20,
     fontWeight: "600",
     alignItems: "center",
-    margin: 20,
+    margin: 20
   },
   textPrice: {
     fontSize: 20,
     fontWeight: "600",
     alignItems: "center",
-    marginHorizontal: 20,
+    marginHorizontal: 20
   },
   image: {
     alignSelf: "center",
@@ -405,7 +396,7 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
     borderRadius: 13,
     borderWidth: 2,
-    backgroundColor: "#fff",
+    backgroundColor: "#fff"
   },
   textLike: {
     borderWidth: 1,
@@ -413,7 +404,7 @@ const styles = StyleSheet.create({
     color: "green",
     fontSize: 32,
     fontWeight: "800",
-    padding: 10,
+    padding: 10
   },
   textDislike: {
     borderWidth: 1,
@@ -421,7 +412,7 @@ const styles = StyleSheet.create({
     color: "red",
     fontSize: 32,
     fontWeight: "800",
-    padding: 10,
+    padding: 10
   },
   submitBtn: {
     display: "flex",
@@ -432,12 +423,18 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignSelf: "center",
     marginVertical: 5,
-    backgroundColor: "#1E792C",
+    backgroundColor: "#1E792C"
   },
   submitText: {
     color: "#fff",
-    fontWeight: "bolder",
+    fontWeight: "bolder"
   },
+  img: {
+    height: SCREEN_HEIGHT,
+    width: SCREEN_WIDTH,
+    justifyContent: "center",
+    alignItems: "center"
+  }
 });
 
 export default Swipe;

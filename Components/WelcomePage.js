@@ -11,7 +11,7 @@ import {
   ScrollView,
   ActivityIndicator,
   SafeAreaView,
-  ImageBackground,
+  ImageBackground
 } from "react-native";
 import { fetchUsers } from "../utils";
 
@@ -28,8 +28,8 @@ const WelcomePage = ({ navigation }) => {
     setIsLoading(true);
 
     fetchUsers()
-      .then((data) => {
-        data.forEach((u) => {
+      .then(data => {
+        data.forEach(u => {
           console.log(u.username === user, u.password === password);
           if (u.username === user && u.password === password) {
             console.log("yay!");
@@ -47,47 +47,55 @@ const WelcomePage = ({ navigation }) => {
   };
 
   const renderLogin = (
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }} style={styles.page}>
-      <KeyboardAvoidingView
-        style={styles.container}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
+    <View>
+      <ImageBackground
+        source={require("./background.png")}
+        resizeMode="stretch"
+        style={styles.img}
       >
-        <Image style={styles.image} source={require("./logo-square.png")} />
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }} style={styles.page}>
+          <KeyboardAvoidingView
+            style={styles.container}
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+          >
+            <Image style={styles.image} source={require("./logo-square.png")} />
 
-        <StatusBar style="auto" />
-        <View style={styles.inputView}>
-          <TextInput
-            style={styles.TextInput}
-            placeholder="Username"
-            returnKeyType="next"
-            onSubmitEditing={() => passwordRef.current.focus()}
-            onChangeText={(user) => setUser(user)}
-          />
-        </View>
-        <View style={styles.inputView}>
-          <TextInput
-            style={styles.TextInput}
-            placeholder="Password"
-            ref={passwordRef}
-            secureTextEntry
-            returnKeyType="done"
-            onChangeText={(password) => setPassword(password)}
-          />
-        </View>
+            <StatusBar style="auto" />
+            <View style={styles.inputView}>
+              <TextInput
+                style={styles.TextInput}
+                placeholder="Username"
+                returnKeyType="next"
+                onSubmitEditing={() => passwordRef.current.focus()}
+                onChangeText={user => setUser(user)}
+              />
+            </View>
+            <View style={styles.inputView}>
+              <TextInput
+                style={styles.TextInput}
+                placeholder="Password"
+                ref={passwordRef}
+                secureTextEntry
+                returnKeyType="done"
+                onChangeText={password => setPassword(password)}
+              />
+            </View>
 
-        <TouchableOpacity>
-          <Text style={styles.forgot_button}>Sign up</Text>
-        </TouchableOpacity>
+            <TouchableOpacity>
+              <Text style={styles.forgot_button}>Sign up</Text>
+            </TouchableOpacity>
 
-        <TouchableOpacity style={styles.loginBtn} onPress={pressHandler}>
-          <Text style={styles.loginText}>LOGIN</Text>
-        </TouchableOpacity>
+            <TouchableOpacity style={styles.loginBtn} onPress={pressHandler}>
+              <Text style={styles.loginText}>LOGIN</Text>
+            </TouchableOpacity>
 
-        <Text style={{ color: "red", opacity: warningOpacity }}>
-          unable to log in, please try again
-        </Text>
-      </KeyboardAvoidingView>
-    </ScrollView>
+            <Text style={{ color: "red", opacity: warningOpacity }}>
+              unable to log in, please try again
+            </Text>
+          </KeyboardAvoidingView>
+        </ScrollView>
+      </ImageBackground>
+    </View>
   );
   return (
     <SafeAreaView>
@@ -101,34 +109,34 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "transparent",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "center"
   },
 
   image: {
     marginBottom: 20,
     width: 300,
-    height: 300,
+    height: 300
   },
 
   inputView: {
-    // backgroundColor: "#f7eab7",
-    backgroundColor: "#fff",
+    backgroundColor: "#f7eab7",
+    //backgroundColor: "#fff",
     borderRadius: 30,
     width: "70%",
     height: 45,
     marginBottom: 10,
-    alignItems: "center",
+    alignItems: "center"
   },
 
   TextInput: {
     height: 50,
     flex: 1,
     padding: 10,
-    marginLeft: 20,
+    marginLeft: 20
   },
 
   forgot_button: {
-    height: 30,
+    height: 30
   },
 
   loginBtn: {
@@ -138,12 +146,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginTop: 10,
-    backgroundColor: "#1E792C",
+    backgroundColor: "#1E792C"
   },
   loginText: {
     fontWeight: "bolder",
-    color: "#fff",
-  },
+    color: "#fff"
+  }
 });
 
 export default WelcomePage;

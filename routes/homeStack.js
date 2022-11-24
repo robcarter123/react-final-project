@@ -14,7 +14,7 @@ const screens = {
     screen: WelcomePage,
     navigationOptions: {
       header: null,
-      cardStyle: { backgroundColor: "#96B5CB" },
+      cardStyle: { backgroundColor: "#fff" },
     },
   },
   "Get the ball rolling...": {
