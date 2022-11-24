@@ -10,7 +10,7 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   ActivityIndicator,
-  SafeAreaView
+  SafeAreaView,
 } from "react-native";
 import { fetchUsers } from "../utils";
 
@@ -27,8 +27,8 @@ const WelcomePage = ({ navigation }) => {
     setIsLoading(true);
 
     fetchUsers()
-      .then(data => {
-        data.forEach(u => {
+      .then((data) => {
+        data.forEach((u) => {
           console.log(u.username === user, u.password === password);
           if (u.username === user && u.password === password) {
             console.log("yay!");
@@ -49,7 +49,7 @@ const WelcomePage = ({ navigation }) => {
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <KeyboardAvoidingView
         style={styles.container}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        // behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
         <Image style={styles.image} source={require("./logo-square.png")} />
 
@@ -60,7 +60,7 @@ const WelcomePage = ({ navigation }) => {
             placeholder="Username"
             returnKeyType="next"
             onSubmitEditing={() => passwordRef.current.focus()}
-            onChangeText={user => setUser(user)}
+            onChangeText={(user) => setUser(user)}
           />
         </View>
         <View style={styles.inputView}>
@@ -70,7 +70,7 @@ const WelcomePage = ({ navigation }) => {
             ref={passwordRef}
             secureTextEntry
             returnKeyType="done"
-            onChangeText={password => setPassword(password)}
+            onChangeText={(password) => setPassword(password)}
           />
         </View>
 
@@ -100,13 +100,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
 
   image: {
     marginBottom: 20,
     width: 300,
-    height: 300
+    height: 300,
   },
 
   inputView: {
@@ -115,18 +115,18 @@ const styles = StyleSheet.create({
     width: "70%",
     height: 45,
     marginBottom: 10,
-    alignItems: "center"
+    alignItems: "center",
   },
 
   TextInput: {
     height: 50,
     flex: 1,
     padding: 10,
-    marginLeft: 20
+    marginLeft: 20,
   },
 
   forgot_button: {
-    height: 30
+    height: 30,
   },
 
   loginBtn: {
@@ -136,8 +136,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginTop: 10,
-    backgroundColor: "#1E792C"
-  }
+    backgroundColor: "#1E792C",
+  },
 });
 
 export default WelcomePage;
