@@ -11,7 +11,7 @@ import WelcomePage from "../Components/WelcomePage";
 
 const screens = {
   "Santa's Little Helper": {
-    screen: WelcomePage,
+    screen: WelcomePage
   },
   PositiveCollectForm: {
     screen: PositiveCollectForm,
@@ -19,22 +19,20 @@ const screens = {
       return {
         // headerTitle: () => <Header navigation={navigation} />
       };
-    },
+    }
   },
   Swipe: {
     screen: Swipe,
-    navigationOptions: {
-      title: "",
+    navigationOptions: () => {
       // headerTitle: () => <Header navigation={navigation} />
-    },
+    }
   },
   History: {
     screen: History,
     navigationOptions: {
-      title: "",
-      headerStyle: { backgroundColor: "#555" },
-    },
-  },
+      headerStyle: { backgroundColor: "#555" }
+    }
+  }
 };
 
 const HomeStack = createStackNavigator(screens);
