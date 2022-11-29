@@ -3,7 +3,7 @@
 Link to hosted version:
 
 Link to associated backend repository: https://github.com/2202Hannah/final-project-be-ebay
-Link to machine learning modeel repository: https://github.com/teyahbd/py-keyword-api
+Link to machine learning modeel repository: https://github.com/teyahbd/ecommerce-keyword-api
 
 ## Table of Contents
 
