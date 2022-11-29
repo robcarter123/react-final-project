@@ -1,4 +1,4 @@
-# Northcoders News Frontend Project
+# Santa's Little Helper Frontend Project
 
 Link to hosted version:
 
